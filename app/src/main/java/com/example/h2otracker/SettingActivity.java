@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +30,25 @@ Adapter adapter;
         images = new ArrayList<>();
 
 
-        titles.add("First item");
-        titles.add("Second item");
-        titles.add("Third item");
-        titles.add("Forth item");
+        titles.add("Dark Mode");
+        titles.add("Sound");
+        titles.add("Feedback");
+        titles.add("Reminder");
+        titles.add("Share By");
 
         images.add(R.drawable.ic_baseline_brightness_3_24);
         images.add(R.drawable.ic_baseline_audiotrack_24);
         images.add(R.drawable.ic_baseline_favorite_24);
         images.add(R.drawable.notification);
+        images.add(R.drawable.share);
+
 
 
         adapter = new Adapter(this,titles,images);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,1,GridLayoutManager.VERTICAL,false);
         dataList.setLayoutManager(gridLayoutManager);
+       // Log.d("SettingActivity", "onCreate: "+ titles.size());
         dataList.setAdapter(adapter);
     }
 }
