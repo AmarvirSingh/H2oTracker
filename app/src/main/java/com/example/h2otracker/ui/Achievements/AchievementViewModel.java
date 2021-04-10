@@ -1,14 +1,14 @@
-package com.example.h2otracker.ui.gallery;
+package com.example.h2otracker.ui.Achievements;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class AchievementViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public AchievementViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is gallery fragment");
     }
