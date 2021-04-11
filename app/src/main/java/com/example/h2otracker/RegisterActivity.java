@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -15,10 +16,11 @@ import android.view.ViewGroup;
 
 import com.example.h2otracker.registerationFragments.FragmentCredential;
 import com.example.h2otracker.registerationFragments.FragmentWeight;
+import com.example.h2otracker.registerationFragments.SelectionFragment;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    public static final int TOTAL_PAGES = 2;
+    public static final int TOTAL_PAGES = 3;
     private ScreenSlideAdapter slideAdapter;
     private ViewPager viewPager;
     @Override
@@ -49,6 +51,9 @@ public class RegisterActivity extends AppCompatActivity {
                 case 1:
                     FragmentWeight fragmentWeight = new FragmentWeight();
                     return fragmentWeight;
+                case 2:
+                    SelectionFragment selectionFragment = new SelectionFragment();
+                    return selectionFragment;
             }
             return null;
         }
