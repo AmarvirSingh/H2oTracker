@@ -51,8 +51,6 @@ public class SelectionFragment extends Fragment {
         tvSleep = view.findViewById(R.id.tvSleep);
         spinner = view.findViewById(R.id.spinner);
 
-        ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item,gender);
-        spinner.setAdapter(adapter);
 
         // perform when saving data
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

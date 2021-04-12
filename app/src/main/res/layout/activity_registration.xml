@@ -1,76 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".RegisterActivity">
 
 
-    <androidx.viewpager.widget.ViewPager
+    <!--<androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/pager"/>
+        android:id="@+id/pager"/>-->
 
-   <!-- <View
+     <View
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="@drawable/login" />
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/login" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="172dp"
+        android:gravity="center_horizontal"
+        android:text="New To H2O"
+        android:textSize="36dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="100dp">
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="172dp"
-            android:gravity="center_horizontal"
-            android:text="New To H2O"
-            android:textSize="36dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:hint="Enter Email "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:hint="Enter Password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText" />
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
 
-        <Button
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
-            android:text="Next"
-            app:layout_constraintEnd_toEndOf="@+id/editText2"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                android:hint="Enter Email "
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
--->
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="Enter Password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText" />
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/etAge"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+
+                android:hint="What is your Age?"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="@+id/etName"
+                app:layout_constraintStart_toStartOf="@+id/etName"
+                app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+            <EditText
+                android:id="@+id/etHeight"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+
+                android:hint="How Tall you are? (in cm)"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="@+id/etAge"
+                app:layout_constraintStart_toStartOf="@+id/etAge"
+                app:layout_constraintTop_toBottomOf="@+id/etAge" />
+
+            <EditText
+                android:id="@+id/etWeight"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+
+                android:hint="what is your body weight (in kg)"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="@+id/etHeight"
+                app:layout_constraintStart_toStartOf="@+id/etHeight"
+                app:layout_constraintTop_toBottomOf="@+id/etHeight" />
+
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+
+                android:hint="What is your name?"
+                android:inputType="textPersonName"
+                />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvSleep"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Select Sleep Time"
+                    app:layout_constraintStart_toStartOf="@+id/tvWake"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWake" />
+
+                <Button
+                    android:id="@+id/btnSleep"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="+"
+                    app:layout_constraintEnd_toEndOf="@+id/btnWake"
+                    app:layout_constraintHorizontal_bias="0.75"
+                    app:layout_constraintStart_toEndOf="@+id/tvWake"
+                    app:layout_constraintTop_toBottomOf="@+id/btnWake" />
+            </LinearLayout>
+
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:gravity="center">
+               <TextView
+                   android:id="@+id/tvWake"
+                   android:layout_width="250dp"
+                   android:layout_height="40dp"
+
+                   android:gravity="center_vertical"
+                   android:text="Select Wakeup Time"
+                   app:layout_constraintStart_toStartOf="@+id/spinner"
+                   app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+               <Button
+                   android:id="@+id/btnWake"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:text="+"
+                   app:layout_constraintStart_toEndOf="@+id/tvWake"
+                   app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+           </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnTakeMeIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="156dp"
+        android:layout_marginRight="156dp"
+        android:layout_marginBottom="39dp"
+        android:text="Take Me In" />
+
+
+</RelativeLayout>
