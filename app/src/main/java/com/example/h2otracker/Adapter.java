@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
     {
         this.titles = titles;
         this.images = images;
+        this.context = context;
         this.inflator = LayoutInflater.from(context);
     }
 
@@ -41,6 +43,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
 
         holder.title.setText(titles.get(position));
         holder.gridIcon.setImageResource(images.get(position));
+
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "You Clicked "+titles.get(position), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
