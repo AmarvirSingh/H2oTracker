@@ -28,10 +28,18 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+
         viewPager = findViewById(R.id.pager);
 
         slideAdapter = new ScreenSlideAdapter(getSupportFragmentManager());
         viewPager.setAdapter(slideAdapter);
+        viewPager.setCurrentItem(viewPager.getCurrentItem());
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
 
     }
 

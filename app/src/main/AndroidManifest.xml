@@ -18,7 +18,9 @@
         <activity android:name=".StaticAndHistoryActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SettingActivity" />
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".RegisterActivity"
+
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
