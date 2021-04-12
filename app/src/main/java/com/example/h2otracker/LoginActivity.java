@@ -12,8 +12,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class LoginActivity extends AppCompatActivity {
 
+
+    FirebaseAuth mAuth;
 
 
     @Override
@@ -47,6 +51,9 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
+
+        mAuth =FirebaseAuth.getInstance();
+
 
 
 
