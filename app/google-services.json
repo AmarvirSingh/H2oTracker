@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "386628852475",
+    "project_id": "h2o-tracker-b2502",
+    "storage_bucket": "h2o-tracker-b2502.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386628852475:android:24a15a6914e2dc1193ee5e",
+        "android_client_info": {
+          "package_name": "com.example.h2otracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386628852475-itajcv4af503lmpb25rt8ru8pbpus7ns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCSk9xcrFNVLliiiWP-pxw3wASjMNB_QA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386628852475-itajcv4af503lmpb25rt8ru8pbpus7ns.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
