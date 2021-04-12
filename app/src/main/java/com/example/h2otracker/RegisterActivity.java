@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -36,6 +37,11 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnTakeMeIn, btnSleep, btnWake;
     Spinner spinner;
     String [] gender = {"Male","Female"};
+    ScrollView scrollView;
+
+    //testing
+    Button check;
+    EditText checkInfo;
 
 
     FirebaseAuth mAuth;
@@ -53,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         sleepTime = findViewById(R.id.signUpSleepTime);
         wakeTime = findViewById(R.id.signUpWakeTime);
         btnSleep = findViewById(R.id.btnSleep);
-        btnTakeMeIn = findViewById(R.id.register);
+        btnTakeMeIn = findViewById(R.id.btnTakeMeIn);
         btnWake = findViewById(R.id.btnWake);
         spinner = findViewById(R.id.signUpSpinner);
 
@@ -64,27 +70,32 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        String name = etName.getText().toString();
+        String userAge = etAge.getText().toString();
+        String userWeight = etWeight.getText().toString();
+        String userHeight = etHeight.getText().toString();
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+
+
         btnTakeMeIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Log.d("Tag", "Take me in Clicked: ");
-                String name = etName.getText().toString();
-                String userAge = etAge.getText().toString();
-                String userWeight = etWeight.getText().toString();
-                String userHeight = etHeight.getText().toString();
-                String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
+
 
                 if (name.isEmpty()){
                     etName.setError("Please fill this field!");
                     etName.requestFocus();
                     return;
-                }else if (userAge.isEmpty()){
+                }
+                if (userAge.isEmpty()){
                     etAge.setError("Please fill this field!");
                     etAge.requestFocus();
                     return;
-                }else if(userWeight.isEmpty()){
+                }
+                if(userWeight.isEmpty()){
                     etWeight.setError("Please fill this field!");
                     etWeight.requestFocus();
                     return;
@@ -116,6 +127,21 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+
+
+
+        checkInfo = findViewById(R.id.checkInfo);
+        check = findViewById(R.id.check);
+
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkInfo.getText().toString().isEmpty()){
+                    checkInfo.setError("Fill this");
+                    return;
+                }
             }
         });
 
