@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
@@ -36,15 +40,14 @@ public class RegisterActivity extends AppCompatActivity {
     TextView sleepTime, wakeTime;
     Button btnTakeMeIn, btnSleep, btnWake;
     Spinner spinner;
-    String [] gender = {"Male","Female"};
-    ScrollView scrollView;
+    String[] gender = {"Male", "Female"};
 
-    //testing
-    Button check;
-    EditText checkInfo;
+    //global variables
+    String userGender, userWakeUp, userSleep;
 
 
     FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,83 +68,89 @@ public class RegisterActivity extends AppCompatActivity {
 
         Log.d("TAG", "On create ");
 
-        ArrayAdapter adapter = new ArrayAdapter(RegisterActivity.this, android.R.layout.simple_spinner_dropdown_item,gender);
+        ArrayAdapter adapter = new ArrayAdapter(RegisterActivity.this, android.R.layout.simple_spinner_dropdown_item, gender);
         spinner.setAdapter(adapter);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        String name = etName.getText().toString();
-        String userAge = etAge.getText().toString();
-        String userWeight = etWeight.getText().toString();
-        String userHeight = etHeight.getText().toString();
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-
-
-        btnTakeMeIn.setOnClickListener(new View.OnClickListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                userGender = gender[position];
+            }
 
-                Log.d("Tag", "Take me in Clicked: ");
-
-
-                if (name.isEmpty()){
-                    etName.setError("Please fill this field!");
-                    etName.requestFocus();
-                    return;
-                }
-                if (userAge.isEmpty()){
-                    etAge.setError("Please fill this field!");
-                    etAge.requestFocus();
-                    return;
-                }
-                if(userWeight.isEmpty()){
-                    etWeight.setError("Please fill this field!");
-                    etWeight.requestFocus();
-                    return;
-                }
-                if (email.isEmpty()){
-                    etEmail.setError("Please Enter your email");
-                    etEmail.requestFocus();
-                    return;
-                }
-                if (password.length()<=6){
-                    etPassword.setError("Password should be greater than 6");
-                    etPassword.requestFocus();
-                    return;
-                }
-                if (userHeight.isEmpty()){
-                    etHeight.setError("Please fill this field!");
-                    etHeight.requestFocus();
-                    return;
-                }
-                if (wakeTime.getText().toString().equals("Select Wakeup Time")){
-                    Toast.makeText(getApplicationContext(), "please select wake up time", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (sleepTime.getText().toString().equals("Select Sleep Time")){
-                    Toast.makeText(getApplicationContext(), "please select sleep time", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
 
+        mAuth = FirebaseAuth.getInstance();
 
-        checkInfo = findViewById(R.id.checkInfo);
-        check = findViewById(R.id.check);
 
-        check.setOnClickListener(new View.OnClickListener() {
+        btnTakeMeIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkInfo.getText().toString().isEmpty()){
-                    checkInfo.setError("Fill this");
+                String name = etName.getText().toString();
+                String userAge = etAge.getText().toString();
+                String userWeight = etWeight.getText().toString();
+                String userHeight = etHeight.getText().toString();
+                String email = etEmail.getText().toString();
+                String password = etPassword.getText().toString();
+
+
+                Log.d("Tag", "Take me in Clicked: ");
+
+
+                if (name.isEmpty()) {
+                    etName.setError("Please fill this field!");
+                    etName.requestFocus();
                     return;
                 }
+                if (userAge.isEmpty()) {
+                    etAge.setError("Please fill this field!");
+                    etAge.requestFocus();
+                    return;
+                }
+                if (userWeight.isEmpty()) {
+                    etWeight.setError("Please fill this field!");
+                    etWeight.requestFocus();
+                    return;
+                }
+                if (email.isEmpty()) {
+                    etEmail.setError("Please Enter your email");
+                    etEmail.requestFocus();
+                    return;
+                }
+                if (password.length() <= 6) {
+                    etPassword.setError("Password should be greater than 6");
+                    etPassword.requestFocus();
+                    return;
+                }
+                if (userHeight.isEmpty()) {
+                    etHeight.setError("Please fill this field!");
+                    etHeight.requestFocus();
+                    return;
+                }
+                if (wakeTime.getText().toString().equals("Select Wakeup Time")) {
+                    Toast.makeText(getApplicationContext(), "please select wake up time", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (sleepTime.getText().toString().equals("Select Sleep Time")) {
+                    Toast.makeText(getApplicationContext(), "please select sleep time", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                                User user = new User(name, email, userAge, userHeight, userWeight,userGender,userWakeUp, userSleep );
+
+                        }else{
+                            Toast.makeText(RegisterActivity.this, "Can not create id ", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             }
         });
 
@@ -170,6 +179,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         wakeTime.setText(selectedHour + ":" + selectedMinute);
+                        userWakeUp = wakeTime.getText().toString();
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -190,6 +200,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         sleepTime.setText(selectedHour + ":" + selectedMinute);
+                        userSleep = sleepTime.getText().toString();
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -197,12 +208,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        btnTakeMeIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
     }
 
