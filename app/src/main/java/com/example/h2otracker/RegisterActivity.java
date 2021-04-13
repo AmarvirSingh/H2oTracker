@@ -68,6 +68,10 @@ public class RegisterActivity extends AppCompatActivity {
         btnWake = findViewById(R.id.btnWake);
         spinner = findViewById(R.id.signUpSpinner);
 
+
+
+
+
         Log.d("TAG", "On create ");
 
         ArrayAdapter adapter = new ArrayAdapter(RegisterActivity.this, android.R.layout.simple_spinner_dropdown_item, gender);
