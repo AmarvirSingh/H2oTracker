@@ -3,6 +3,10 @@ package com.example.h2otracker;
 public class User {
     private String fullName, Email, age, height, weight, gender, wakeupTime, sleepTime;
 
+    public User() {
+
+    }
+
     public User(String fullName, String email, String age, String height, String weight, String gender, String wakeupTime, String sleepTime) {
         this.fullName = fullName;
         Email = email;

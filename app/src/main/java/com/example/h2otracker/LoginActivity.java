@@ -37,6 +37,17 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user!= null)
+        {
+            startActivity(new Intent(this,ProfileActivity.class));
+            finish();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -69,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         //getting instance
         mAuth =FirebaseAuth.getInstance();
-        // craeting request
+        // creating request
         createRequest();
 
         loginUsing.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(LoginActivity.this, "signed in successfully" + user.getUid(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());

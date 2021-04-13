@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:text="Help?"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Press and Hold to edit info of your profile"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
+
+<Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="OK"
+    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+    android:gravity="center_horizontal"
+    android:id="@+id/dismissDialog"/>
+
+</LinearLayout>
