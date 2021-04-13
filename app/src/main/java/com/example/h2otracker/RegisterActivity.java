@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -47,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     FirebaseAuth mAuth;
+    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +146,18 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                                 User user = new User(name, email, userAge, userHeight, userWeight,userGender,userWakeUp, userSleep );
+                                FirebaseDatabase.getInstance().getReference("User").child(mAuth.getCurrentUser().getUid())
+                                        .child("UserInfo").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Toast.makeText(RegisterActivity.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
 
+                                    }else{
+                                        Toast.makeText(RegisterActivity.this, "Sorry Cannot register", Toast.LENGTH_SHORT).show();
+                                    }
+                                    }
+                                });
                         }else{
                             Toast.makeText(RegisterActivity.this, "Can not create id ", Toast.LENGTH_SHORT).show();
                         }
