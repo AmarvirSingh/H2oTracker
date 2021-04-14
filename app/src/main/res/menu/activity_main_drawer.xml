@@ -8,7 +8,8 @@
         <item
             android:id="@+id/acheivements"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Achievement" />
+            android:title="Achievement"
+            />
         <item
             android:id="@+id/stastics"
             android:icon="@drawable/ic_menu_slideshow"
