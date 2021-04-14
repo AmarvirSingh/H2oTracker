@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user!= null)
         {
-            startActivity(new Intent(this,ProfileActivity.class));
+            startActivity(new Intent(this, ProfileActivity.class));
             finish();
         }
     }
@@ -58,10 +58,10 @@ public class LoginActivity extends AppCompatActivity {
         Button btnLogin = findViewById(R.id.btnLogin);
         TextView loginForgotPassword = findViewById(R.id.loginForgotPassword);
         TextView loginCreateAccount = findViewById(R.id.loginCreateAccount);
-        TextView loginOr = findViewById(R.id.loginOr);
+       // TextView loginOr = findViewById(R.id.loginOr);
         TextView loginUsing = findViewById(R.id.loginUsing);
-        ImageView loginGoogle = findViewById(R.id.loginGoogle);
-        View bg = findViewById(R.id.bg);
+       // ImageView loginGoogle = findViewById(R.id.loginGoogle);
+      //  View bg = findViewById(R.id.bg);
 
         Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein);
 
@@ -72,23 +72,13 @@ public class LoginActivity extends AppCompatActivity {
         loginForgotPassword.setAnimation(animation);
         loginCreateAccount.setAnimation(animation);
 
-        loginCreateAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
+        loginCreateAccount.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
         //getting instance
         mAuth =FirebaseAuth.getInstance();
         // creating request
         createRequest();
 
-        loginUsing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+        loginUsing.setOnClickListener(v -> signIn());
 
 
 

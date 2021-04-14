@@ -118,7 +118,6 @@ public class ProfileActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
                 dialog.show();
                 return true;
             default:
