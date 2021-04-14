@@ -67,7 +67,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
         super(itemView);
 
         title = itemView.findViewById(R.id.textView2);
-        gridIcon = itemView.findViewById(R.id.imageView3);
+        gridIcon = itemView.findViewById(R.id.imageView5);
 
     }
 }

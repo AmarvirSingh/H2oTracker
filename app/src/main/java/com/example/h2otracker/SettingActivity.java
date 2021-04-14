@@ -6,13 +6,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SettingActivity extends AppCompatActivity {
-RecyclerView dataList;
+//RecyclerView dataList;
 
+
+    private Switch dark_switch;
 List<String> titles;
 List<Integer> images;
 
@@ -44,11 +47,11 @@ Adapter adapter;
 
 
 
-        adapter = new Adapter(this,titles,images);
+      /*  adapter = new Adapter(this,titles,images);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,1,GridLayoutManager.VERTICAL,false);
         dataList.setLayoutManager(gridLayoutManager);
        // Log.d("SettingActivity", "onCreate: "+ titles.size());
-        dataList.setAdapter(adapter);
+        dataList.setAdapter(adapter);*/
     }
 }
