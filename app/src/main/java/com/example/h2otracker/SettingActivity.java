@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,11 +33,13 @@ Adapter adapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        card1 = findViewById(R.id.card1);
+      //  card1 = findViewById(R.id.card1);
        // dataList = findViewById(R.id.datalist);
 
         //dark mode settings
         dark_switch = findViewById(R.id.switch3);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
 
         dark_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
