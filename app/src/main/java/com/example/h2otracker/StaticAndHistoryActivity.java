@@ -3,6 +3,7 @@ package com.example.h2otracker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,12 +11,16 @@ import android.widget.DatePicker;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
@@ -27,6 +32,7 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
 
     BarChart chart;
     Button selectDate;
+    PieChart pieChart;
 
 
     @Override
@@ -36,6 +42,8 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
 
         chart = findViewById(R.id.chart);
         selectDate = findViewById(R.id.selectDate);
+        pieChart = findViewById(R.id.pieChart);
+
 
         // for datePicker dialog
         Calendar calendar = Calendar.getInstance();
@@ -59,29 +67,36 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
         });
 
 
-// for bar chart
-        BarDataSet barDataSet = new BarDataSet(dataValues(),"Water Intake");
+        // for bar chart
+        BarDataSet barDataSet = new BarDataSet(dataValues(), "Water Intake");
         BarData barData = new BarData();
         barData.addDataSet(barDataSet);
         chart.setData(barData);
 
+        // for pie chart
+        int[] colorArray = new int[] {Color.GRAY,Color.RED};
 
+        PieDataSet pieDataSet = new PieDataSet(dataValuesForPie(),"PieChart");
+        PieData pieData = new PieData();
+        pieData.addDataSet(pieDataSet);
+        pieChart.setData(pieData);
+        pieDataSet.setColors(colorArray);
+        pieChart.invalidate();
 
     }
 
-    private List<Entry> dataValuesForLine() {
-        ArrayList<Entry> entryArrayList = new ArrayList<>();
-        entryArrayList.add(new Entry(14,1500));
-        entryArrayList.add(new Entry(15,1800));
-        entryArrayList.add(new Entry(16,2250));
+    private List<PieEntry> dataValuesForPie() {
+        ArrayList<PieEntry> entryArrayList = new ArrayList<>();
+        entryArrayList.add(new PieEntry(25));
+        entryArrayList.add(new PieEntry(75));
         return entryArrayList;
     }
 
     private List<BarEntry> dataValues() {
         ArrayList<BarEntry> entryArrayList = new ArrayList<>();
-        entryArrayList.add(new BarEntry(14,1500));
-        entryArrayList.add(new BarEntry(15,1800));
-        entryArrayList.add(new BarEntry(16,2250));
+        entryArrayList.add(new BarEntry(14, 1500));
+        entryArrayList.add(new BarEntry(15, 1800));
+        entryArrayList.add(new BarEntry(16, 2250));
         return entryArrayList;
     }
 }
