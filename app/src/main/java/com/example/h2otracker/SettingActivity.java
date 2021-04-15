@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -30,6 +31,29 @@ Adapter adapter;
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        final boolean isDarkModeOn = getSharedPreferences("sharedPrefs",MODE_PRIVATE).getBoolean("isDarkModeOn",false);
+
+
+        if(isDarkModeOn)
+        {
+            dark_switch.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        else
+        {
+            dark_switch.setChecked(false);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        }
+
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
@@ -41,26 +65,56 @@ Adapter adapter;
 
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
 
-        dark_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        final SharedPreferences.Editor editor =sharedPreferences.edit();
+
+        final boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn",false);
+
+
+        if(isDarkModeOn)
         {
+            dark_switch.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        else
+        {
+            dark_switch.setChecked(false);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        }
+
+
+
+
+
+        dark_switch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onClick(View v)
+
             {
-                if (isChecked)
+
+                if (isDarkModeOn)
                 {
                    /* card1.setCardBackgroundColor(Color.BLACK);*/
 
 
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                   //  getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+                    editor.putBoolean("isDarkModeOn",false);
+                    editor.apply();
+
                 }
 
                 else
                 {
 
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
  //                   getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+                    editor.putBoolean("isDarkModeOn",true);
+                    editor.apply();
                 }
 
             }
