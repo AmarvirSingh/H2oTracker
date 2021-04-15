@@ -74,7 +74,7 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
         chart.setData(barData);
 
         // for pie chart
-        int[] colorArray = new int[] {Color.GRAY,Color.RED};
+        int[] colorArray = new int[] {Color.rgb(10,10,25),Color.BLUE};
 
         PieDataSet pieDataSet = new PieDataSet(dataValuesForPie(),"PieChart");
         PieData pieData = new PieData();
@@ -87,8 +87,8 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
 
     private List<PieEntry> dataValuesForPie() {
         ArrayList<PieEntry> entryArrayList = new ArrayList<>();
-        entryArrayList.add(new PieEntry(25));
-        entryArrayList.add(new PieEntry(75));
+        entryArrayList.add(new PieEntry(25,"Coffee"));
+        entryArrayList.add(new PieEntry(75,"Water"));
         return entryArrayList;
     }
 
