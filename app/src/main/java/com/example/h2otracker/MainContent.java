@@ -1,10 +1,15 @@
 package com.example.h2otracker;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,10 +26,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class MainContent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainContent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
+    TextView quotes;
+    String[] motiQuotes = {"tfyds","fds","fds","fsd"};
+    Button addWater;
+    ProgressBar progressBar;
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +43,24 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        quotes = findViewById(R.id.quotesID);
+        addWater = findViewById(R.id.AddWater);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setMax(5000);
+        progressBar.setProgress(50);
+        addWater.setOnClickListener(this);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                quotesChange();
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                progressBar.setVisibility(view.VISIBLE);
             }
         });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -57,6 +78,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         /*NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);*/
+
+
+
     }
 
     @Override
@@ -81,10 +105,28 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
-    /*@Override
+   public void quotesChange()
+   {
+       String c;
+       for(int i=0;i<motiQuotes.length;i++)
+       {
+           c=motiQuotes[i];
+           quotes.setText(String.valueOf(c));
+       }
+
+   }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+ /*@Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }*/
+
+
 }
