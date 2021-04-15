@@ -19,9 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />-->
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -42,8 +40,8 @@
                 app:srcCompat="@drawable/app_icon" />
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="311dp"
+                android:id="@+id/quotesID"
+                android:layout_width="256dp"
                 android:layout_height="58dp"
                 android:layout_marginTop="4dp"
                 android:text="Beautiful quotes"
@@ -51,6 +49,13 @@
                 app:layout_constraintHorizontal_bias="0.428"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/nextText"
+                android:layout_width="51dp"
+                android:layout_height="37dp"
+                android:layout_weight="1"
+                android:text="Next" />
 
         </LinearLayout>
         <LinearLayout
@@ -70,6 +75,7 @@
                     android:layout_height="match_parent"
                     android:progress="50"
                     android:progressDrawable="@drawable/progress_bar"
+                    android:max="5000"
                     android:rotation="-90"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -77,6 +83,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1250ml/2525ml"
@@ -97,25 +104,27 @@
             android:gravity="center_horizontal"
             android:paddingVertical="10dp"
             android:orientation="horizontal">
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:text="Change Cup"
-                />
 
             <Button
-                android:layout_marginHorizontal="10dp"
+                android:id="@+id/chanegCup"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="+"
-                />
+                android:layout_marginHorizontal="10dp"
+                android:text="Change Cup" />
+
             <Button
-                android:layout_marginHorizontal="10dp"
+                android:id="@+id/AddWater"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Edit Cup"
-                />
+                android:layout_marginHorizontal="10dp"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/cupEdit"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:text="Edit Cup" />
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
