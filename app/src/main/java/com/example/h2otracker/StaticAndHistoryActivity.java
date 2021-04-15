@@ -2,7 +2,11 @@ package com.example.h2otracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -15,12 +19,15 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class StaticAndHistoryActivity extends AppCompatActivity {
 
-    LineChart lineChart;
+
     BarChart chart;
+    Button selectDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +35,29 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_static_and_history);
 
         chart = findViewById(R.id.chart);
-        lineChart = findViewById(R.id.lineChart);
+        selectDate = findViewById(R.id.selectDate);
+
+        // for datePicker dialog
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(StaticAndHistoryActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                selectDate.setText(day + "/" + month + "/" + year);
+                            }
+                        }, year, month, dayOfMonth);
+                datePickerDialog.show();
+            }
+
+        });
+
 
 // for bar chart
         BarDataSet barDataSet = new BarDataSet(dataValues(),"Water Intake");
@@ -36,15 +65,6 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
         barData.addDataSet(barDataSet);
         chart.setData(barData);
 
-        LineDataSet dataSet = new LineDataSet(dataValuesForLine(),"Water Intake");
-
-        ArrayList<ILineDataSet> iLineDataSet = new ArrayList<>();
-        iLineDataSet.add(dataSet);
-        LineData lineData = new LineData(iLineDataSet);
-        lineChart.setData(lineData);
-        lineChart.canScrollVertically(1);
-
-        lineChart.invalidate();
 
 
     }
