@@ -21,7 +21,7 @@ public class SettingActivity extends AppCompatActivity {
 
     CardView card1,card2,card3,card4,card5;
 
-    private Switch dark_switch;
+    Switch dark_switch;
 List<String> titles;
 List<Integer> images;
 
@@ -45,7 +45,7 @@ Adapter adapter;
             {
                 if (isChecked)
                 {
-                    card1.setCardBackgroundColor(Color.BLACK);
+                   /* card1.setCardBackgroundColor(Color.BLACK);*/
 
 
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -54,7 +54,7 @@ Adapter adapter;
 
                 else
                 {
-                    card1.setBackgroundColor(Color.WHITE);
+
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
  //                   getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
