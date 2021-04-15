@@ -72,6 +72,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             case R.id.nav_settings:
                 startActivity( new Intent(this, SettingActivity.class));
                 return true;
+            case R.id.Statistics:
+                startActivity(new Intent(this, StaticAndHistoryActivity.class));
+                return true;
             default:
                 Toast.makeText(this, "we can not ", Toast.LENGTH_SHORT).show();
                 return true;

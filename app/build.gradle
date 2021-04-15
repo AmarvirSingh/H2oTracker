@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.navigation:navigation-runtime:2.2.2'
-    implementation 'com.google.firebase:firebase-auth:20.0.3'
+    implementation 'com.google.firebase:firebase-auth:20.0.4'
     implementation 'com.google.firebase:firebase-database:19.7.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -54,7 +54,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // new dependency for pie chart
-    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+    /*implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'*/
        
 
         // Also declare the dependency for the Google Play services library and specify its version

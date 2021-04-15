@@ -11,7 +11,7 @@
             android:title="Achievement"
             />
         <item
-            android:id="@+id/stastics"
+            android:id="@+id/Statistics"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Statistics" />
         <item
