@@ -38,7 +38,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
         if(isDarkModeOn)
         {
-
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
