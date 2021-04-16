@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ public class SettingActivity extends AppCompatActivity {
 List<String> titles;
 List<Integer> images;
 
+TextView feedback ,shareBy;
 Adapter adapter;
 
 
@@ -60,6 +63,35 @@ Adapter adapter;
       //  card1 = findViewById(R.id.card1);
        // dataList = findViewById(R.id.datalist);
 
+        //share by
+        shareBy = findViewById(R.id.shareBy);
+        shareBy.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+
+            }
+        });
+
+
+        //feedback
+        feedback = findViewById(R.id.feedback);
+
+        feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent emailIntent = new Intent(Intent. ACTION_SEND);
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"FeedbACKH2O@gmail.com"});
+
+                emailIntent.setType("message/rfc822");
+
+                startActivity(Intent.createChooser(emailIntent,"Choose an Email client :"));
+
+            }
+        });
         //dark mode settings
         dark_switch = findViewById(R.id.switch3);
 
