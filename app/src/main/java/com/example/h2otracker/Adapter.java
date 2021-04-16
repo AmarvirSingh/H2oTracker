@@ -15,15 +15,15 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
 {
-    List<String> titles;
-    List<Integer> images;
+    List<String> time;
+    List<String> amount;
     Context context;
     LayoutInflater inflator;
 
-    public Adapter(Context context,List<String> titles,List<Integer> images)
+    public Adapter(Context context,List<String> amount,List<String> time)
     {
-        this.titles = titles;
-        this.images = images;
+        this.amount = amount;
+        this.time = time;
         this.context = context;
         this.inflator = LayoutInflater.from(context);
     }
@@ -32,7 +32,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflator.inflate(R.layout.custom_grid_layout,parent,false);
+        View view = inflator.inflate(R.layout.history_detail_cell,parent,false);
 
         return new ViewHolder(view);
     }
@@ -41,33 +41,28 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.title.setText(titles.get(position));
-        holder.gridIcon.setImageResource(images.get(position));
+        holder.cell_time.setText(time.get(position));
+       holder.cell_amount.setText(amount.get(position));
 
-        holder.title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "You Clicked "+titles.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
     @Override
     public int getItemCount() {
-        return titles.size();
+        return amount.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
 {
-    TextView title;
+    TextView cell_amount, cell_time;
     ImageView gridIcon;
 
 
     public ViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        title = itemView.findViewById(R.id.textView2);
-        gridIcon = itemView.findViewById(R.id.imageView5);
+        cell_amount = itemView.findViewById(R.id.cell_amount);
+        cell_time = itemView.findViewById(R.id.cell_time);
 
     }
 }

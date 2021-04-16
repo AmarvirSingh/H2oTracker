@@ -28,14 +28,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class MainContent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MainContent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     TextView quotes, waterQuantity;
     String[] motiQuotes = {"Good Quote", "fds", "fds", "fsd"};
-    Button addWater, nextText;
+    Button addWater, nextQuote, changeCup, editCup;
     ProgressBar progressBar;
     private FirebaseAuth mAuth;
+
+    private int totalIntake = 2250;
+    private  int totalAmount = 0;
 
 
 
@@ -65,12 +68,30 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         quotes = findViewById(R.id.quotesID);
         addWater = findViewById(R.id.AddWater);
         waterQuantity = findViewById(R.id.quantity);
-        nextText = findViewById(R.id.nextText);
+        nextQuote = findViewById(R.id.nextText);
+        changeCup = findViewById(R.id.changeCup);
+
+
+        // working with progress bar
         progressBar = findViewById(R.id.progressBar);
-        progressBar.setMax(5000);
-        progressBar.setProgress(50);
-        addWater.setOnClickListener(this);
-       // nextText.setOnClickListener(this);
+        progressBar.setMax(totalIntake);
+        progressBar.setProgress(totalAmount);
+        waterQuantity.setText(0 + "/" + totalIntake );
+
+        int intake =  Integer.parseInt(addWater.getText().toString()); // converting string to integer value
+
+
+        addWater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pro = progressBar.getProgress();
+                if ( pro < progressBar.getMax()){
+                    progressBar.setProgress(pro+intake);
+                    waterQuantity.setText(pro + intake + "/ "+ totalIntake);
+                }
+            }
+        });
+
 
         quotesChange();
         
@@ -135,18 +156,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
     }
 
-    @Override
-    public void onClick(View v) {
-        for (int i = 0; i < 20; i++) {
-            int x = 0;
-            if (addWater.isPressed()) {
-                x += 250;
-
-                progressBar.setProgress(x);
-            }
-            waterQuantity.setText(String.valueOf(x));
-        }
-
  /*@Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -154,6 +163,4 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                 || super.onSupportNavigateUp();
     }*/
 
-
-    }
 }
