@@ -1,11 +1,13 @@
 package com.example.h2otracker;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -92,6 +94,46 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             }
         });
 
+        // change cup style
+        changeCup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Dialog dialog = new Dialog(MainContent.this);
+
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.cup_selector_dialog);
+
+                Button smallSize  = dialog.findViewById(R.id.smallCup);
+                Button mediumSize  = dialog.findViewById(R.id.mediumCup);
+                Button largeSize  = dialog.findViewById(R.id.largeCup);
+
+
+                smallSize.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainContent.this, ""+smallSize.getText(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+                mediumSize.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainContent.this, ""+mediumSize.getText(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+                largeSize.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainContent.this, ""+largeSize.getText(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+
+            }
+        });
 
         quotesChange();
         
