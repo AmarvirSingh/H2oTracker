@@ -1,5 +1,6 @@
 package com.example.h2otracker.HelperClass;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -38,6 +39,19 @@ public class HelperClass extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS  historyTable ;");
     }
 
+    // function to add data to table
+    public long addRecord(String amount, String total, String time, byte[] imageInByte) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("amount",amount);
+        cv.put("total",total);
+        cv.put("time",time);
+        cv.put("image",imageInByte);
+
+        long result = db.insert("historyTable",null,cv);
+
+        return result;
+    }
 
 
 }

@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user!= null)
         {
-            startActivity(new Intent(this, ProfileActivity.class));
+            startActivity(new Intent(this, MainContent.class));
             finish();
         }
     }
@@ -78,21 +78,10 @@ public class LoginActivity extends AppCompatActivity {
         // creating request
         createRequest();
 
-        loginUsing.setOnClickListener(v -> signIn());
+        loginUsing.setOnClickListener(v -> {
+            signIn();
+        });
 
-
-
-
-        /*loginTextView.animate().alpha(1).setDuration(1000).setStartDelay(500);
-        loginEmail.animate().alpha(1).setDuration(1000).setStartDelay(750);
-        loginPassword.animate().alpha(1).setDuration(1000).setStartDelay(1000);
-        btnLogin.animate().alpha(1).setDuration(1000).setStartDelay(1250);
-        loginForgotPassword.animate().alpha(1).setDuration(1000).setStartDelay(1250);
-        loginCreateAccount.animate().alpha(1).setDuration(1000).setStartDelay(1500);
-        loginOr.animate().alpha(1).setDuration(1000).setStartDelay(1750);
-        loginUsing.animate().alpha(1).setDuration(1000).setStartDelay(2000);
-        loginGoogle.animate().alpha(1).setDuration(1000).setStartDelay(2250);
-        bg.animate().translationY(-70).setDuration(1000).setStartDelay(500);*/
 
     }
 
@@ -143,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(LoginActivity.this, "signed in successfully" + user.getUid(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                            startActivity(new Intent(getApplicationContext(), MainContent.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());

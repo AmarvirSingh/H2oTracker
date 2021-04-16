@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -34,6 +35,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     String[] motiQuotes = {"tfyds", "fds", "fds", "fsd"};
     Button addWater, nextText;
     ProgressBar progressBar;
+    private FirebaseAuth mAuth;
+
 
 
     @Override
@@ -56,6 +59,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        mAuth = FirebaseAuth.getInstance();
 
         quotes = findViewById(R.id.quotesID);
         addWater = findViewById(R.id.AddWater);
@@ -85,6 +90,14 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         actionBarDrawerToggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+        View view = navigationView.getHeaderView(0);
+        TextView userName = view.findViewById(R.id.userName);
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainContent.this, ProfileActivity.class));
+            }
+        });
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -111,6 +124,10 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                 return true;
             case R.id.Statistics:
                 startActivity(new Intent(this, StaticAndHistoryActivity.class));
+                return true;
+            case R.id.nav_logout:
+                mAuth.signOut();
+                startActivity(new Intent(this, LoginActivity.class));
                 return true;
             default:
                 Toast.makeText(this, "we can not ", Toast.LENGTH_SHORT).show();
