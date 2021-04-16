@@ -50,6 +50,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     private  int totalAmount = 0;
     HelperClass helperClass;
     HistoryAdapter historyAdapter;
+    ArrayList<HistoryClass> historyClassArrayList = new ArrayList<>();
 
 
     // string arrays for history tab
@@ -93,9 +94,13 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         changeDrink.setText("Water");
 
         helperClass = new HelperClass(this);
+        // getting history from helper class
+        historyClassArrayList = helperClass.getHistory();
 
-        historyAdapter = new HistoryAdapter(MainContent.this,amount,time,type);
+        historyAdapter = new HistoryAdapter(MainContent.this,historyClassArrayList,helperClass);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
+        recyclerView.setAdapter(historyAdapter);
+
 
         // working with progress bar
         progressBar = findViewById(R.id.progressBar);
@@ -111,13 +116,22 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     progressBar.setProgress(pro+intake);
                     waterQuantity.setText(pro + intake + "/ "+ totalIntake);
                     // adding data to array list to use in recycler view
-                    type.add(changeDrink.getText().toString().trim());
-                    amount.add(addWater.getText().toString().trim() + " ml");
+                  /*  type.add(changeDrink.getText().toString().trim());
+                    amount.add(addWater.getText().toString().trim() + " ml");*/
                     Calendar calendar =  Calendar.getInstance();
                     String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" +calendar.get(Calendar.MINUTE) ;
                     time.add(currentTime);
 
+                    long result = helperClass.addRecord(addWater.getText().toString(),changeDrink.getText().toString(),currentTime);
+                    if (result != -1){
+                            Toast.makeText(MainContent.this, "done ", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MainContent.this, "Not done", Toast.LENGTH_SHORT).show();
+                    }
+
                     recyclerView.setAdapter(historyAdapter);
+
+
                 }
             }
         });

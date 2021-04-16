@@ -11,23 +11,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.h2otracker.HelperClass.HelperClass;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>
 {
-    ArrayList<String> time;
-    ArrayList<String> amount;
-    ArrayList<String> type;
+   ArrayList<HistoryClass> historyClassArrayList;
     Context context;
+    HelperClass helperClass;
     LayoutInflater inflator;
 
-    public HistoryAdapter(Context context,ArrayList<String> amount,ArrayList<String> time, ArrayList<String>type)
+    public HistoryAdapter(Context context,ArrayList<HistoryClass> historyClassArrayList,HelperClass helperClass)
     {
-        this.amount = amount;
-        this.time = time;
+
         this.context = context;
-        this.type = type;
+        this.historyClassArrayList = historyClassArrayList;
+        this.helperClass = helperClass;
         this.inflator = LayoutInflater.from(context);
     }
 
@@ -44,15 +45,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.cell_time.setText(time.get(position));
-       holder.cell_amount.setText(amount.get(position));
-       holder.cell_type.setText(type.get(position));
+        holder.cell_time.setText(historyClassArrayList.get(position).getTime());
+       holder.cell_amount.setText(historyClassArrayList.get(position).getAmount());
+       holder.cell_type.setText(historyClassArrayList.get(position).getType());
+
 
     }
 
     @Override
     public int getItemCount() {
-        return type.size();
+        return historyClassArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
