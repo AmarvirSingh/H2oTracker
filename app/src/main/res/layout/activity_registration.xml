@@ -139,6 +139,7 @@
                 android:id="@+id/btnSleep"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@color/buttonColor"
                 android:text="+"
                 app:layout_constraintEnd_toEndOf="@+id/btnWake"
                 app:layout_constraintHorizontal_bias="0.75"
@@ -167,6 +168,7 @@
                 android:id="@+id/btnWake"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@color/buttonColor"
                 android:text="+"
                 app:layout_constraintStart_toEndOf="@+id/tvWake"
                 app:layout_constraintTop_toBottomOf="@+id/spinner" />
@@ -178,6 +180,7 @@
             android:id="@+id/btnTakeMeIn"
             android:layout_width="113dp"
             android:layout_height="wrap_content"
+            android:background="@color/buttonColor"
             android:text="Take ME In"
             android:textAllCaps="false" />
 

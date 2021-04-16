@@ -32,7 +32,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
 
     TextView quotes, waterQuantity;
-    String[] motiQuotes = {"tfyds", "fds", "fds", "fsd"};
+    String[] motiQuotes = {"Good Quote", "fds", "fds", "fsd"};
     Button addWater, nextText;
     ProgressBar progressBar;
     private FirebaseAuth mAuth;
@@ -58,7 +58,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -73,16 +73,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
        // nextText.setOnClickListener(this);
 
         quotesChange();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                progressBar.setVisibility(view.VISIBLE);
-            }
-        });
-
+        
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

@@ -45,6 +45,7 @@
                 android:layout_height="58dp"
                 android:layout_marginTop="4dp"
                 android:text="Beautiful quotes"
+                android:textColor="@color/textColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.428"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -55,6 +56,7 @@
                 android:layout_width="51dp"
                 android:layout_height="37dp"
                 android:layout_weight="1"
+                android:textColor="@color/textColor"
                 android:text="Next" />
 
         </LinearLayout>
@@ -88,6 +90,7 @@
                     android:layout_height="wrap_content"
                     android:text="1250ml/2525ml"
                     android:textStyle="bold"
+                    android:textColor="@color/textColor"
                     app:layout_constraintBottom_toBottomOf="@+id/progressBar"
                     app:layout_constraintEnd_toEndOf="@+id/progressBar"
                     app:layout_constraintStart_toStartOf="@+id/progressBar"
@@ -110,26 +113,33 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:text="Change Cup" />
+                android:background="@color/buttonColor"
+                android:text="Change Cup"
+                android:textColor="@color/textColor" />
 
             <Button
                 android:id="@+id/AddWater"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:text="+" />
+                android:background="@color/buttonColor"
+                android:text="+"
+                android:textColor="@color/textColor" />
 
             <Button
                 android:id="@+id/cupEdit"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:text="Edit Cup" />
+                android:background="@color/buttonColor"
+                android:text="Edit Cup"
+                android:textColor="@color/textColor" />
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Today's History"
+            android:textColor="@color/textColor"
             android:gravity="center_horizontal"
             android:textSize="30dp"/>
 
