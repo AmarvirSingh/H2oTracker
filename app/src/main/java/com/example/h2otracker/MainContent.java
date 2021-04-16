@@ -80,12 +80,12 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         progressBar.setProgress(totalAmount);
         waterQuantity.setText(0 + "/" + totalIntake );
 
-        int intake =  Integer.parseInt(addWater.getText().toString()); // converting string to integer value
 
 
         addWater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int intake =  Integer.parseInt(addWater.getText().toString()); // converting string to integer value
                 int pro = progressBar.getProgress();
                 if ( pro < progressBar.getMax()){
                     progressBar.setProgress(pro+intake);
@@ -113,6 +113,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(MainContent.this, ""+smallSize.getText(), Toast.LENGTH_SHORT).show();
+                        addWater.setText("100");
                         dialog.dismiss();
                     }
                 });
@@ -120,6 +121,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(MainContent.this, ""+mediumSize.getText(), Toast.LENGTH_SHORT).show();
+                        addWater.setText("200");
                         dialog.dismiss();
                     }
                 });
@@ -127,6 +129,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(MainContent.this, ""+largeSize.getText(), Toast.LENGTH_SHORT).show();
+                        addWater.setText("300");
                         dialog.dismiss();
                     }
                 });
@@ -153,12 +156,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             }
         });
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-
-        /*NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);*/
 
 
     }
@@ -184,7 +181,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
             default:
-                Toast.makeText(this, "we can not ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "activity Not Applied ", Toast.LENGTH_SHORT).show();
                 return true;
         }
     }
@@ -198,11 +195,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
     }
 
- /*@Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }*/
+
 
 }
