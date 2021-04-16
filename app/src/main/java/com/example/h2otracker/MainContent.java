@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.h2otracker.HelperClass.HelperClass;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -35,12 +36,13 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
     TextView quotes, waterQuantity;
     String[] motiQuotes = {"Good Quote", "fds", "fds", "fsd"};
-    Button addWater, nextQuote, changeCup, editCup;
+    Button addWater, nextQuote, changeCup, changeDrink;
     ProgressBar progressBar;
     private FirebaseAuth mAuth;
-
     private int totalIntake = 2250;
     private  int totalAmount = 0;
+
+    HelperClass helperClass;
 
 
 
@@ -72,6 +74,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         waterQuantity = findViewById(R.id.quantity);
         nextQuote = findViewById(R.id.nextText);
         changeCup = findViewById(R.id.changeCup);
+        changeDrink = findViewById(R.id.changeDrink);
+        changeDrink.setText("Water");
+
 
 
         // working with progress bar
@@ -79,9 +84,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         progressBar.setMax(totalIntake);
         progressBar.setProgress(totalAmount);
         waterQuantity.setText(0 + "/" + totalIntake );
-
-
-
         addWater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +102,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             public void onClick(View v) {
 
                 Dialog dialog = new Dialog(MainContent.this);
-
                 dialog.setCancelable(false);
                 dialog.setContentView(R.layout.cup_selector_dialog);
 
@@ -138,6 +139,49 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             }
         });
 
+
+        // change drink
+        changeDrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Dialog dialog = new Dialog(MainContent.this);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.cup_selector_dialog);
+
+                Button waterDrink  = dialog.findViewById(R.id.waterDrink);
+                Button coffeeDrink  = dialog.findViewById(R.id.coffeeDrink);
+                Button SodaDrink  = dialog.findViewById(R.id.sodaDrink);
+
+
+                waterDrink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainContent.this, ""+waterDrink.getText(), Toast.LENGTH_SHORT).show();
+                        changeDrink.setText("Water");
+                        dialog.dismiss();
+                    }
+                });
+                coffeeDrink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainContent.this, ""+coffeeDrink.getText(), Toast.LENGTH_SHORT).show();
+                        addWater.setText("Coffee");
+                        dialog.dismiss();
+                    }
+                });
+                SodaDrink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainContent.this, ""+SodaDrink.getText(), Toast.LENGTH_SHORT).show();
+                        addWater.setText("Soda");
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+
+            }
+        });
         quotesChange();
         
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

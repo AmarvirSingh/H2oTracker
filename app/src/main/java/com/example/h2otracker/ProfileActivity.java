@@ -46,6 +46,8 @@ public class ProfileActivity extends AppCompatActivity {
         profileWeight = findViewById(R.id.profileWeight);
         logout = findViewById(R.id.logout);
 
+        /*
+
         account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
             reference = FirebaseDatabase.getInstance().getReference("User");
@@ -54,7 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
             user = mAuth.getCurrentUser();
 
         }
-
+*/
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
