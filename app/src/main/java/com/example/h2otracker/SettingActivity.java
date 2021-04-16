@@ -33,7 +33,7 @@ List<String> titles;
 List<Integer> images;
 
 TextView feedback ,shareBy;
-Adapter adapter;
+
 
 
     @Override

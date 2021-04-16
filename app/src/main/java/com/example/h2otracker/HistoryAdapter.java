@@ -11,20 +11,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>
 {
-    List<String> time;
-    List<String> amount;
+    ArrayList<String> time;
+    ArrayList<String> amount;
+    ArrayList<String> type;
     Context context;
     LayoutInflater inflator;
 
-    public Adapter(Context context,List<String> amount,List<String> time)
+    public HistoryAdapter(Context context,ArrayList<String> amount,ArrayList<String> time, ArrayList<String>type)
     {
         this.amount = amount;
         this.time = time;
         this.context = context;
+        this.type = type;
         this.inflator = LayoutInflater.from(context);
     }
 
@@ -43,18 +46,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
 
         holder.cell_time.setText(time.get(position));
        holder.cell_amount.setText(amount.get(position));
-
+       holder.cell_type.setText(type.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return amount.size();
+        return type.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
 {
-    TextView cell_amount, cell_time;
+    TextView cell_amount, cell_time, cell_type;
     ImageView gridIcon;
 
 
@@ -63,7 +66,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
 
         cell_amount = itemView.findViewById(R.id.cell_amount);
         cell_time = itemView.findViewById(R.id.cell_time);
-
+        cell_type = itemView.findViewById(R.id.cell_type);
     }
 }
 }

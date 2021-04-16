@@ -30,6 +30,12 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainContent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,12 +43,19 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     TextView quotes, waterQuantity;
     String[] motiQuotes = {"Good Quote", "fds", "fds", "fsd"};
     Button addWater, nextQuote, changeCup, changeDrink;
+    RecyclerView recyclerView;
     ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private int totalIntake = 2250;
     private  int totalAmount = 0;
-
     HelperClass helperClass;
+    HistoryAdapter historyAdapter;
+
+
+    // string arrays for history tab
+    ArrayList<String> time = new ArrayList<>();
+    ArrayList<String> amount = new ArrayList<>();
+    ArrayList<String> type = new ArrayList<>();
 
 
 
@@ -75,9 +88,14 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         nextQuote = findViewById(R.id.nextText);
         changeCup = findViewById(R.id.changeCup);
         changeDrink = findViewById(R.id.changeDrink);
+        recyclerView = findViewById(R.id.recyclerView);
+
         changeDrink.setText("Water");
 
+        helperClass = new HelperClass(this);
 
+        historyAdapter = new HistoryAdapter(MainContent.this,amount,time,type);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
 
         // working with progress bar
         progressBar = findViewById(R.id.progressBar);
@@ -92,6 +110,14 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                 if ( pro < progressBar.getMax()){
                     progressBar.setProgress(pro+intake);
                     waterQuantity.setText(pro + intake + "/ "+ totalIntake);
+                    // adding data to array list to use in recycler view
+                    type.add(changeDrink.getText().toString().trim());
+                    amount.add(addWater.getText().toString().trim() + " ml");
+                    Calendar calendar =  Calendar.getInstance();
+                    String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" +calendar.get(Calendar.MINUTE) ;
+                    time.add(currentTime);
+
+                    recyclerView.setAdapter(historyAdapter);
                 }
             }
         });
@@ -147,7 +173,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
                 Dialog dialog = new Dialog(MainContent.this);
                 dialog.setCancelable(false);
-                dialog.setContentView(R.layout.cup_selector_dialog);
+                dialog.setContentView(R.layout.drink_selector_dialog);
 
                 Button waterDrink  = dialog.findViewById(R.id.waterDrink);
                 Button coffeeDrink  = dialog.findViewById(R.id.coffeeDrink);
@@ -166,7 +192,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(MainContent.this, ""+coffeeDrink.getText(), Toast.LENGTH_SHORT).show();
-                        addWater.setText("Coffee");
+                        changeDrink.setText("Coffee");
                         dialog.dismiss();
                     }
                 });
@@ -174,7 +200,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(MainContent.this, ""+SodaDrink.getText(), Toast.LENGTH_SHORT).show();
-                        addWater.setText("Soda");
+                        changeDrink.setText("Soda");
                         dialog.dismiss();
                     }
                 });
@@ -182,6 +208,10 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
             }
         });
+
+
+
+
         quotesChange();
         
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
