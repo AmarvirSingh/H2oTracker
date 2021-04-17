@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
 
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,12 @@ public class ProfileActivity extends AppCompatActivity {
         profileHeight = findViewById(R.id.profileHeight);
         profileWeight = findViewById(R.id.profileWeight);
         logout = findViewById(R.id.logout);
+
+        sharedPreferences = getSharedPreferences("UserInfo",MODE_PRIVATE);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("User");
 
         /*
 
@@ -81,10 +90,19 @@ public class ProfileActivity extends AppCompatActivity {
                     gender = profile.getGender();
 
                     profileName.setText(name);
-                    profileAge.setText(age);
-                    profileWeight.setText(weight);
-                    profileHeight.setText(height);
+                    profileAge.setText(age + " Years Old");
+                    profileWeight.setText(weight +" KG");
+                    profileHeight.setText(height + " CM");
                     profileGender.setText(gender);
+
+                    // saving data in shared preferences
+                    sharedPreferences.edit().putInt("age",Integer.parseInt(age)).apply();
+                    sharedPreferences.edit().putInt("height",Integer.parseInt(height)).apply();
+                    sharedPreferences.edit().putInt("weight",Integer.parseInt(weight)).apply();
+                    sharedPreferences.edit().putString("gender",gender).apply();
+
+                    Log.d("TAG", "onDataChange: gender = "+sharedPreferences.getInt("weight",0));
+
                 }
             }
 

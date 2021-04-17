@@ -1,45 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center">
 
-    <TextView
+    android:layout_gravity="center_horizontal">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:text="Select your Drink below"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textStyle="bold"
-        android:textColor="@color/textColor"
-        android:layout_marginBottom="10dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Water"
-        android:layout_marginVertical="5dp"
-        android:background="@color/buttonColor"
-        android:textColor="@color/textColor"
-        android:id="@+id/waterDrink"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
-        android:background="@color/buttonColor"
-        android:textColor="@color/textColor"
-        android:text="Coffee"
-        android:id="@+id/coffeeDrink"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/buttonColor"
-        android:textColor="@color/textColor"
-        android:text="Soda"
-        android:layout_marginVertical="5dp"
-        android:id="@+id/sodaDrink"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:text="Select your Drink below"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/textColor"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/waterDrink"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:background="@color/buttonColor"
+            android:text="Water"
+            android:textColor="@color/textColor" />
+
+        <Button
+            android:id="@+id/coffeeDrink"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:background="@color/buttonColor"
+            android:text="Coffee"
+            android:textColor="@color/textColor" />
+
+        <Button
+            android:id="@+id/sodaDrink"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:background="@color/buttonColor"
+            android:text="Soda"
+            android:textColor="@color/textColor" />
+
+
+    </LinearLayout>
 
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

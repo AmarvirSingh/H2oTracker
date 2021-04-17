@@ -3,7 +3,9 @@ package com.example.h2otracker;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -19,6 +21,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -45,18 +53,24 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     Button addWater, nextQuote, changeCup, changeDrink;
     RecyclerView recyclerView;
     ProgressBar progressBar;
-    private FirebaseAuth mAuth;
-    private int totalIntake = 2250;
+    //firebase stuff
+    DatabaseReference reference;
+    FirebaseAuth mAuth;
+    FirebaseUser user;
+
+
+
+    private int totalIntake ;
     private  int totalAmount = 0;
+
     HelperClass helperClass;
     HistoryAdapter historyAdapter;
     ArrayList<HistoryClass> historyClassArrayList = new ArrayList<>();
 
+    SharedPreferences sharedPreferencesWaterIntake,sharedPreferencesUserInfo;
 
-    // string arrays for history tab
-    ArrayList<String> time = new ArrayList<>();
-    ArrayList<String> amount = new ArrayList<>();
-    ArrayList<String> type = new ArrayList<>();
+
+
 
 
 
@@ -80,8 +94,26 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // using shared preference for total intake
+        sharedPreferencesWaterIntake = getSharedPreferences("WaterIntake",MODE_PRIVATE);
+        final SharedPreferences.Editor editor =sharedPreferencesWaterIntake.edit();
+        totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake",0);
 
+// shared preference for user info
+        sharedPreferencesUserInfo = getSharedPreferences("UserInfo",MODE_PRIVATE);
+
+    //setting up firebase
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("User");
+
+        //getting data from firebase and put them into shared preferences
+        getUserData();
+
+        //calculating waterIntake
+        calculateWaterIntake();
+
+
 
         quotes = findViewById(R.id.quotesID);
         addWater = findViewById(R.id.AddWater);
@@ -94,12 +126,20 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         changeDrink.setText("Water");
 
         helperClass = new HelperClass(this);
-        // getting history from helper class
-        historyClassArrayList = helperClass.getHistory();
 
-        historyAdapter = new HistoryAdapter(MainContent.this,historyClassArrayList,helperClass);
+try {
+    // getting history from helper class
+    historyClassArrayList = helperClass.getHistory();
+
+    if (historyClassArrayList.size()>0) {
+        historyAdapter = new HistoryAdapter(MainContent.this, historyClassArrayList, helperClass);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
         recyclerView.setAdapter(historyAdapter);
+    }
+
+}catch (Exception e){
+    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+}
 
 
         // working with progress bar
@@ -107,6 +147,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         progressBar.setMax(totalIntake);
         progressBar.setProgress(totalAmount);
         waterQuantity.setText(0 + "/" + totalIntake );
+
         addWater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +161,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     amount.add(addWater.getText().toString().trim() + " ml");*/
                     Calendar calendar =  Calendar.getInstance();
                     String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" +calendar.get(Calendar.MINUTE) ;
-                    time.add(currentTime);
+
 
                     long result = helperClass.addRecord(addWater.getText().toString(),changeDrink.getText().toString(),currentTime);
                     if (result != -1){
@@ -129,10 +170,19 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "Not done", Toast.LENGTH_SHORT).show();
                     }
 
-                    recyclerView.setAdapter(historyAdapter);
+                    refreshRecyclerView();
 
 
                 }
+            }
+
+            private void refreshRecyclerView() {
+                historyClassArrayList.clear();
+                historyClassArrayList = helperClass.getHistory();
+                historyAdapter = new HistoryAdapter(MainContent.this,historyClassArrayList,helperClass);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
+                recyclerView.setAdapter(historyAdapter);
+                historyAdapter.notifyDataSetChanged();
             }
         });
 
@@ -245,6 +295,58 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         });
 
 
+
+    }
+
+    private void getUserData() {
+        reference.child(user.getUid()).child("UserInfo").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User profile = snapshot.getValue(User.class);
+                String name, age, height, weight, gender;
+
+                if (profile != null) {
+                    name = profile.getFullName();
+                    age = profile.getAge();
+                    height = profile.getHeight();
+                    weight = profile.getWeight();
+                    gender = profile.getGender();
+
+
+                    // saving data in shared preferences
+                    sharedPreferencesUserInfo.edit().putInt("age", Integer.parseInt(age)).apply();
+                    sharedPreferencesUserInfo.edit().putInt("height", Integer.parseInt(height)).apply();
+                    sharedPreferencesUserInfo.edit().putInt("weight", Integer.parseInt(weight)).apply();
+                    sharedPreferencesUserInfo.edit().putString("gender", gender).apply();
+
+                    Log.d("TAG", "getUserData: gender = " + sharedPreferencesUserInfo.getInt("gender", 0));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void calculateWaterIntake() {
+
+        //receiving this information from profile activity
+        //edited : we can not get information from profile activity because our first main screen is this activity
+        //so we have to get info from the RealTime Database
+
+       int userAge = sharedPreferencesUserInfo.getInt("age",0);
+       int weight = sharedPreferencesUserInfo.getInt("weight",0);
+        int height = sharedPreferencesUserInfo.getInt("height",0);
+        String gender = sharedPreferencesUserInfo.getString("gender","");
+
+
+
+
+
+        Log.d("TAG", "calculateWaterIntake: age "+ sharedPreferencesUserInfo.getInt("weight",0));
 
     }
 

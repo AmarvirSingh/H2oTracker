@@ -60,7 +60,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder
 {
     TextView cell_amount, cell_time, cell_type;
-    ImageView gridIcon;
+
 
 
     public ViewHolder(@NonNull View itemView) {
