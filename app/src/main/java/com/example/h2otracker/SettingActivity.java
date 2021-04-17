@@ -3,9 +3,14 @@ package com.example.h2otracker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -19,6 +24,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.ContentHandler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +34,7 @@ public class SettingActivity extends AppCompatActivity {
 
     CardView card1,card2,card3,card4,card5;
 
-    Switch dark_switch;
+    Switch dark_switch,Reminder;
 List<String> titles;
 List<Integer> images;
 
@@ -65,6 +71,41 @@ Adapter adapter;
         setContentView(R.layout.activity_setting);
       //  card1 = findViewById(R.id.card1);
        // dataList = findViewById(R.id.datalist);
+
+        // reminder
+
+        Reminder = findViewById(R.id.ReminderSwitch);
+        Reminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = "Much longer text that cannot fit one line...";
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
+                        .setSmallIcon(R.drawable.notification)
+                        .setContentTitle("My notification")
+                        .setContentText(message)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText("Much longer text that cannot fit one line..."))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true);
+
+                Intent intent = new Intent(SettingActivity.this,MainContent.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("message",message);
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(SettingActivity.this,
+                        0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.setContentIntent(pendingIntent);
+
+
+                NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+                notificationManager.notify(0,builder.build());
+
+            }
+        });
+
+
+
 
         //share by
         shareBy = findViewById(R.id.shareBy);
@@ -167,6 +208,11 @@ Adapter adapter;
 
             }
         });
+
+
+
+
+
 
 
 
