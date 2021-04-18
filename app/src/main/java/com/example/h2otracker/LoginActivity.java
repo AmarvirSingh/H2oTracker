@@ -129,7 +129,28 @@ public class    LoginActivity extends AppCompatActivity {
             }
         });
 
+        loginForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (loginEmail.getText().toString().isEmpty()){
+                    loginEmail.setError("Please enter email address then press Forgot password");
+                    loginEmail.requestFocus();
+                    return;
+                }
+                mAuth.sendPasswordResetEmail(loginEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(LoginActivity.this, "Reset password Link has been sent to the given Email ", Toast.LENGTH_LONG).show();
+                            loginEmail.setText("");
 
+                        }else{
+                            Toast.makeText(LoginActivity.this, "Some Error occur, Please try again.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        });
 
 
     }
