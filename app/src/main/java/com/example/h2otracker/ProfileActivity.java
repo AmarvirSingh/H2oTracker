@@ -49,7 +49,6 @@ public class ProfileActivity extends AppCompatActivity {
         profileWeight = findViewById(R.id.profileWeight);
         logout = findViewById(R.id.logout);
 
-        sharedPreferences = getSharedPreferences("UserInfo",MODE_PRIVATE);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -94,14 +93,6 @@ public class ProfileActivity extends AppCompatActivity {
                     profileWeight.setText(weight +" KG");
                     profileHeight.setText(height + " CM");
                     profileGender.setText(gender);
-
-                    // saving data in shared preferences
-                    sharedPreferences.edit().putInt("age",Integer.parseInt(age)).apply();
-                    sharedPreferences.edit().putInt("height",Integer.parseInt(height)).apply();
-                    sharedPreferences.edit().putInt("weight",Integer.parseInt(weight)).apply();
-                    sharedPreferences.edit().putString("gender",gender).apply();
-
-                    Log.d("TAG", "onDataChange: gender = "+sharedPreferences.getInt("weight",0));
 
                 }
             }

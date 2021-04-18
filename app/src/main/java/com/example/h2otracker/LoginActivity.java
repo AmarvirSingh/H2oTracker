@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -28,6 +30,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class    LoginActivity extends AppCompatActivity {
 
@@ -38,6 +45,7 @@ public class    LoginActivity extends AppCompatActivity {
 
     Button btnLogin;
 
+    SharedPreferences sharedPreferencesForUserInfo ;
 
 
     @Override
@@ -66,6 +74,8 @@ public class    LoginActivity extends AppCompatActivity {
         TextView loginUsing = findViewById(R.id.loginUsing);
        // ImageView loginGoogle = findViewById(R.id.loginGoogle);
       //  View bg = findViewById(R.id.bg);
+
+        sharedPreferencesForUserInfo = getSharedPreferences("UserInfo",MODE_PRIVATE);
 
         Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein);
 
@@ -115,10 +125,55 @@ public class    LoginActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            // redirect to user profile
-                            startActivity(new Intent(LoginActivity.this,MainContent.class));
-                            finish();
+                        if (task.isSuccessful()) {
+
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String Uid = user.getUid();
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
+                            // receiving user data from firebase database
+
+                            reference.child(user.getUid()).child("UserInfo").addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    User profile = snapshot.getValue(User.class);
+                                    String name, age, height, weight, gender;
+
+                                    if (profile != null) {
+                                        name = profile.getFullName();
+                                        age = profile.getAge();
+                                        height = profile.getHeight();
+                                        weight = profile.getWeight();
+                                        gender = profile.getGender();
+
+                                        Log.d("TAG", "onDataChange: " + name);
+
+
+                                        // saving data in shared preferences
+                                        sharedPreferencesForUserInfo.edit().putInt("age", Integer.parseInt(age)).apply();
+                                        sharedPreferencesForUserInfo.edit().putInt("height", Integer.parseInt(height)).apply();
+                                        sharedPreferencesForUserInfo.edit().putInt("weight", Integer.parseInt(weight)).apply();
+                                        sharedPreferencesForUserInfo.edit().putString("gender", gender).apply();
+
+                                        Toast.makeText(LoginActivity.this, "age in get user data" + sharedPreferencesForUserInfo.getInt("age", 0), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+
+
+                            });
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // redirect to user profile
+                                    startActivity(new Intent(LoginActivity.this, MainContent.class));
+                                    finish();
+                                }
+                            }, 5000);
+
                         }
                         else{
                             Toast.makeText(LoginActivity.this, "failed to logfin", Toast.LENGTH_SHORT).show();
