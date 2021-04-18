@@ -312,6 +312,8 @@ try {
                     weight = profile.getWeight();
                     gender = profile.getGender();
 
+                    Log.d("TAG", "onDataChange: " + name);
+
 
                     // saving data in shared preferences
                     sharedPreferencesUserInfo.edit().putInt("age", Integer.parseInt(age)).apply();
@@ -319,8 +321,7 @@ try {
                     sharedPreferencesUserInfo.edit().putInt("weight", Integer.parseInt(weight)).apply();
                     sharedPreferencesUserInfo.edit().putString("gender", gender).apply();
 
-                    Log.d("TAG", "getUserData: gender = " + sharedPreferencesUserInfo.getInt("gender", 0));
-
+                    Toast.makeText(MainContent.this, "age in get user data"+sharedPreferencesUserInfo.getInt("age",0), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -343,10 +344,7 @@ try {
         String gender = sharedPreferencesUserInfo.getString("gender","");
 
 
-
-
-
-        Log.d("TAG", "calculateWaterIntake: age "+ sharedPreferencesUserInfo.getInt("weight",0));
+        Toast.makeText(this, "user age in calculation "+userAge, Toast.LENGTH_LONG).show();
 
     }
 
