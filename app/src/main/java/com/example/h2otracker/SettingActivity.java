@@ -8,6 +8,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -38,7 +40,7 @@ public class SettingActivity extends AppCompatActivity {
 List<String> titles;
 List<Integer> images;
 
-TextView feedback ,shareBy;
+TextView feedback ,shareBy,notificationTone;
 
 
 
@@ -71,6 +73,50 @@ TextView feedback ,shareBy;
         setContentView(R.layout.activity_setting);
       //  card1 = findViewById(R.id.card1);
        // dataList = findViewById(R.id.datalist);
+
+
+
+
+        // notification tones
+        notificationTone = findViewById(R.id.notificationTone);
+        notificationTone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Dialog dialog = new Dialog(SettingActivity.this);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.activity_notification_tone);
+
+                Button tone1 = dialog.findViewById(R.id.tone1);
+                Button tone2 = dialog.findViewById(R.id.tone2);
+
+
+
+                tone1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(SettingActivity.this, "" + tone1.getText(), Toast.LENGTH_SHORT).show();
+                        //   addWater.setText("100");
+                        dialog.dismiss();
+                    }
+                });
+
+
+                tone2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(SettingActivity.this, "" + tone2.getText(), Toast.LENGTH_SHORT).show();
+                        //   addWater.setText("100");
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+
+        });
+
+
 
         // reminder
 
