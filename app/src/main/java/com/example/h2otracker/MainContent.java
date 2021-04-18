@@ -91,12 +91,17 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         setSupportActionBar(toolbar);
 
         // using shared preference for total intake
-
         sharedPreferencesWaterIntake = getSharedPreferences("WaterIntake", MODE_PRIVATE);
 
-        totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake", 0);
         // shared preference for user info
         sharedPreferencesForUserInfo = getSharedPreferences("UserInfo", MODE_PRIVATE);
+
+
+        //calculating waterIntake
+        calculateWaterIntake();
+
+        totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake", 0);
+
 
         //setting up firebase
         mAuth = FirebaseAuth.getInstance();
@@ -104,8 +109,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         reference = FirebaseDatabase.getInstance().getReference("User");
 
 
-        //calculating waterIntake
-        calculateWaterIntake();
+
 
 
         quotes = findViewById(R.id.quotesID);
@@ -323,10 +327,14 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight",2600).apply();
         }
 
+        int total1 = sharedPreferencesWaterIntake.getInt("totalIntakeAge",0);
+        int totol2 = sharedPreferencesWaterIntake.getInt("totalIntakeWeight",0);
 
+        int finalTotal = (total1 + totol2)/2;
 
+        sharedPreferencesWaterIntake.edit().putInt("totalIntake",finalTotal).apply();
 
-        Toast.makeText(this, "user age in calculation " + userAge, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Total Amount of water needed is  " + finalTotal, Toast.LENGTH_LONG).show();
 
     }
 
