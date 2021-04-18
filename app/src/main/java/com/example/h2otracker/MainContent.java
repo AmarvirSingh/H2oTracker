@@ -91,6 +91,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_content);
 
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -290,6 +292,7 @@ try {
         userName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("TAG", "onClick:  in username");
                 startActivity(new Intent(MainContent.this, ProfileActivity.class));
             }
         });
