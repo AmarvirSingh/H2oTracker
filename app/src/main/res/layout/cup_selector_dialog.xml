@@ -6,17 +6,17 @@
     android:gravity="center">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
         android:text="Select your cup size below"
-        android:textSize="30dp"
+        android:textSize="28dp"
         android:gravity="center_horizontal"
         android:textStyle="bold"
         android:textColor="@color/textColor"
         android:layout_marginBottom="10dp"/>
 
     <Button
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="100ml"
         android:layout_marginVertical="5dp"
@@ -24,7 +24,7 @@
         android:textColor="@color/textColor"
         android:id="@+id/smallCup"/>
     <Button
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
         android:background="@color/buttonColor"
@@ -32,7 +32,7 @@
         android:text="200ml"
         android:id="@+id/mediumCup"/>
     <Button
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/buttonColor"
         android:textColor="@color/textColor"

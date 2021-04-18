@@ -59,28 +59,23 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     FirebaseUser user;
 
 
-
-    private int totalIntake ;
-    private  int totalAmount = 0;
+    private int totalIntake;
+    private int totalAmount = 0;
 
     HelperClass helperClass;
     HistoryAdapter historyAdapter;
     ArrayList<HistoryClass> historyClassArrayList = new ArrayList<>();
 
-    SharedPreferences sharedPreferencesWaterIntake,sharedPreferencesUserInfo;
-
-
-
-
+    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo;
 
 
     @Override
     protected void onStart() {
 
-        boolean isDarkModeOn = getSharedPreferences("sharedPrefs",MODE_PRIVATE).getBoolean("isDarkModeOn",false);
+        boolean isDarkModeOn = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("isDarkModeOn", false);
         if (isDarkModeOn) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }else {
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         super.onStart();
@@ -92,29 +87,25 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         setContentView(R.layout.activity_main_content);
 
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // using shared preference for total intake
-        sharedPreferencesWaterIntake = getSharedPreferences("WaterIntake",MODE_PRIVATE);
-        final SharedPreferences.Editor editor =sharedPreferencesWaterIntake.edit();
-        totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake",0);
 
-// shared preference for user info
-        sharedPreferencesUserInfo = getSharedPreferences("UserInfo",MODE_PRIVATE);
+        sharedPreferencesWaterIntake = getSharedPreferences("WaterIntake", MODE_PRIVATE);
 
-    //setting up firebase
+        totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake", 0);
+        // shared preference for user info
+        sharedPreferencesForUserInfo = getSharedPreferences("UserInfo", MODE_PRIVATE);
+
+        //setting up firebase
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("User");
 
-        //getting data from firebase and put them into shared preferences
-        getUserData();
 
         //calculating waterIntake
         calculateWaterIntake();
-
 
 
         quotes = findViewById(R.id.quotesID);
@@ -129,46 +120,46 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
         helperClass = new HelperClass(this);
 
-try {
-    // getting history from helper class
-    historyClassArrayList = helperClass.getHistory();
+        try {
+            // getting history from helper class
+            historyClassArrayList = helperClass.getHistory();
 
-    if (historyClassArrayList.size()>0) {
-        historyAdapter = new HistoryAdapter(MainContent.this, historyClassArrayList, helperClass);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
-        recyclerView.setAdapter(historyAdapter);
-    }
+            if (historyClassArrayList.size() > 0) {
+                historyAdapter = new HistoryAdapter(MainContent.this, historyClassArrayList, helperClass);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
+                recyclerView.setAdapter(historyAdapter);
+            }
 
-}catch (Exception e){
-    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-}
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
 
         // working with progress bar
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(totalIntake);
         progressBar.setProgress(totalAmount);
-        waterQuantity.setText(0 + "/" + totalIntake );
+        waterQuantity.setText(0 + "/" + totalIntake);
 
         addWater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int intake =  Integer.parseInt(addWater.getText().toString()); // converting string to integer value
+                int intake = Integer.parseInt(addWater.getText().toString()); // converting string to integer value
                 int pro = progressBar.getProgress();
-                if ( pro < progressBar.getMax()){
-                    progressBar.setProgress(pro+intake);
-                    waterQuantity.setText(pro + intake + "/ "+ totalIntake);
+                if (pro < progressBar.getMax()) {
+                    progressBar.setProgress(pro + intake);
+                    waterQuantity.setText(pro + intake + "/ " + totalIntake);
                     // adding data to array list to use in recycler view
                   /*  type.add(changeDrink.getText().toString().trim());
                     amount.add(addWater.getText().toString().trim() + " ml");*/
-                    Calendar calendar =  Calendar.getInstance();
-                    String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" +calendar.get(Calendar.MINUTE) ;
+                    Calendar calendar = Calendar.getInstance();
+                    String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
 
 
-                    long result = helperClass.addRecord(addWater.getText().toString(),changeDrink.getText().toString(),currentTime);
-                    if (result != -1){
-                            Toast.makeText(MainContent.this, "done ", Toast.LENGTH_SHORT).show();
-                    }else{
+                    long result = helperClass.addRecord(addWater.getText().toString(), changeDrink.getText().toString(), currentTime);
+                    if (result != -1) {
+                        Toast.makeText(MainContent.this, "done ", Toast.LENGTH_SHORT).show();
+                    } else {
                         Toast.makeText(MainContent.this, "Not done", Toast.LENGTH_SHORT).show();
                     }
 
@@ -181,7 +172,7 @@ try {
             private void refreshRecyclerView() {
                 historyClassArrayList.clear();
                 historyClassArrayList = helperClass.getHistory();
-                historyAdapter = new HistoryAdapter(MainContent.this,historyClassArrayList,helperClass);
+                historyAdapter = new HistoryAdapter(MainContent.this, historyClassArrayList, helperClass);
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
                 recyclerView.setAdapter(historyAdapter);
                 historyAdapter.notifyDataSetChanged();
@@ -197,15 +188,15 @@ try {
                 dialog.setCancelable(false);
                 dialog.setContentView(R.layout.cup_selector_dialog);
 
-                Button smallSize  = dialog.findViewById(R.id.smallCup);
-                Button mediumSize  = dialog.findViewById(R.id.mediumCup);
-                Button largeSize  = dialog.findViewById(R.id.largeCup);
+                Button smallSize = dialog.findViewById(R.id.smallCup);
+                Button mediumSize = dialog.findViewById(R.id.mediumCup);
+                Button largeSize = dialog.findViewById(R.id.largeCup);
 
 
                 smallSize.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainContent.this, ""+smallSize.getText(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainContent.this, "" + smallSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("100");
                         dialog.dismiss();
                     }
@@ -213,7 +204,7 @@ try {
                 mediumSize.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainContent.this, ""+mediumSize.getText(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainContent.this, "" + mediumSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("200");
                         dialog.dismiss();
                     }
@@ -221,7 +212,7 @@ try {
                 largeSize.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainContent.this, ""+largeSize.getText(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainContent.this, "" + largeSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("300");
                         dialog.dismiss();
                     }
@@ -241,15 +232,15 @@ try {
                 dialog.setCancelable(false);
                 dialog.setContentView(R.layout.drink_selector_dialog);
 
-                Button waterDrink  = dialog.findViewById(R.id.waterDrink);
-                Button coffeeDrink  = dialog.findViewById(R.id.coffeeDrink);
-                Button SodaDrink  = dialog.findViewById(R.id.sodaDrink);
+                Button waterDrink = dialog.findViewById(R.id.waterDrink);
+                Button coffeeDrink = dialog.findViewById(R.id.coffeeDrink);
+                Button SodaDrink = dialog.findViewById(R.id.sodaDrink);
 
 
                 waterDrink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainContent.this, ""+waterDrink.getText(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainContent.this, "" + waterDrink.getText(), Toast.LENGTH_SHORT).show();
                         changeDrink.setText("Water");
                         dialog.dismiss();
                     }
@@ -257,7 +248,7 @@ try {
                 coffeeDrink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainContent.this, ""+coffeeDrink.getText(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainContent.this, "" + coffeeDrink.getText(), Toast.LENGTH_SHORT).show();
                         changeDrink.setText("Coffee");
                         dialog.dismiss();
                     }
@@ -265,7 +256,7 @@ try {
                 SodaDrink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainContent.this, ""+SodaDrink.getText(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainContent.this, "" + SodaDrink.getText(), Toast.LENGTH_SHORT).show();
                         changeDrink.setText("Soda");
                         dialog.dismiss();
                     }
@@ -276,10 +267,8 @@ try {
         });
 
 
-
-
         quotesChange();
-        
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -298,41 +287,6 @@ try {
         });
 
 
-
-    }
-
-    private void getUserData() {
-        reference.child(user.getUid()).child("UserInfo").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User profile = snapshot.getValue(User.class);
-                String name, age, height, weight, gender;
-
-                if (profile != null) {
-                    name = profile.getFullName();
-                    age = profile.getAge();
-                    height = profile.getHeight();
-                    weight = profile.getWeight();
-                    gender = profile.getGender();
-
-                    Log.d("TAG", "onDataChange: " + name);
-
-
-                    // saving data in shared preferences
-                    sharedPreferencesUserInfo.edit().putInt("age", Integer.parseInt(age)).apply();
-                    sharedPreferencesUserInfo.edit().putInt("height", Integer.parseInt(height)).apply();
-                    sharedPreferencesUserInfo.edit().putInt("weight", Integer.parseInt(weight)).apply();
-                    sharedPreferencesUserInfo.edit().putString("gender", gender).apply();
-
-                    Toast.makeText(MainContent.this, "age in get user data"+sharedPreferencesUserInfo.getInt("age",0), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     private void calculateWaterIntake() {
@@ -341,13 +295,38 @@ try {
         //edited : we can not get information from profile activity because our first main screen is this activity
         //so we have to get info from the RealTime Database
 
-       int userAge = sharedPreferencesUserInfo.getInt("age",0);
-       int weight = sharedPreferencesUserInfo.getInt("weight",0);
-        int height = sharedPreferencesUserInfo.getInt("height",0);
-        String gender = sharedPreferencesUserInfo.getString("gender","");
+        int userAge = sharedPreferencesForUserInfo.getInt("age", 0);
+        int weight = sharedPreferencesForUserInfo.getInt("weight", 0);
+        int height = sharedPreferencesForUserInfo.getInt("height", 0);
+        String gender = sharedPreferencesForUserInfo.getString("gender", "");
 
 
-        Toast.makeText(this, "user age in calculation "+userAge, Toast.LENGTH_LONG).show();
+        if (userAge < 13) {
+            sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 1700).apply();
+        } else if (userAge >= 14 && userAge <= 18) {
+            sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 2300).apply();
+        } else if (userAge >= 19) {
+            if (gender.equalsIgnoreCase("male")) {
+                sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 3100).apply();
+            } else {
+                sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 2100).apply();
+            }
+        }
+
+        if (weight >= 45 && weight < 55) {
+            sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight", 1500).apply();
+        } else if (weight >= 55 && weight < 65) {
+            sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight", 1900).apply();
+        } else if (weight >= 65 && weight < 75) {
+                sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight", 2200).apply();
+        }else if (weight >=75 && weight < 85){
+            sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight",2600).apply();
+        }
+
+
+
+
+        Toast.makeText(this, "user age in calculation " + userAge, Toast.LENGTH_LONG).show();
 
     }
 
@@ -385,7 +364,6 @@ try {
         }
 
     }
-
 
 
 }
