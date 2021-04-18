@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -28,12 +29,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginActivity extends AppCompatActivity {
+public class    LoginActivity extends AppCompatActivity {
 
 
     private static final int RC_SIGN_IN = 123;
     FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
+
+    Button btnLogin;
+
 
 
     @Override
@@ -55,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView loginTextView = findViewById(R.id.loginTextView);
         EditText loginEmail = findViewById(R.id.loginEmail);
         EditText loginPassword = findViewById(R.id.loginPassword);
-        Button btnLogin = findViewById(R.id.btnLogin);
+        btnLogin = findViewById(R.id.btnLogin);
         TextView loginForgotPassword = findViewById(R.id.loginForgotPassword);
         TextView loginCreateAccount = findViewById(R.id.loginCreateAccount);
        // TextView loginOr = findViewById(R.id.loginOr);
@@ -81,6 +85,51 @@ public class LoginActivity extends AppCompatActivity {
         loginUsing.setOnClickListener(v -> {
             signIn();
         });
+
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = loginEmail.getText().toString().trim();
+                String password = loginPassword.getText().toString().trim();
+
+                if (email.isEmpty()){
+                    loginEmail.setError("Please enter email");
+                    loginEmail.requestFocus();
+                    return;
+                }
+
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    loginEmail.setError("Please provide valid email address");
+                    loginEmail.requestFocus();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    loginPassword.setError("please enter password");
+                    loginPassword.requestFocus();
+                    return;
+                }
+
+               // progressBarLogin.setVisibility(View.VISIBLE);
+
+                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            // redirect to user profile
+                            startActivity(new Intent(LoginActivity.this,MainContent.class));
+                            finish();
+                        }
+                        else{
+                            Toast.makeText(LoginActivity.this, "failed to logfin", Toast.LENGTH_SHORT).show();
+                           // progressBarLogin.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+        });
+
+
 
 
     }
