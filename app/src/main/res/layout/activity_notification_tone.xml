@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".NotificationToneActivity">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Select Tones below:"
+        android:textSize="30dp"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textColor="@color/textColor"
+        android:layout_marginBottom="10dp"/>
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="144dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Tone1"
+        android:layout_marginVertical="5dp"
+        android:background="@color/backgroundColor"
+        android:textColor="@color/textColor"
+        android:id="@+id/tone1"/>
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@color/backgroundColor"
+        android:textColor="@color/textColor"
+        android:text="Tone2"
+        android:id="@+id/tone2"/>
+
+
+
+
+</LinearLayout>
