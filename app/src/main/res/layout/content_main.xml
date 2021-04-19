@@ -51,14 +51,6 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/nextText"
-                android:layout_width="51dp"
-                android:layout_height="37dp"
-                android:layout_weight="1"
-                android:textColor="@color/textColor"
-                android:text="Next" />
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

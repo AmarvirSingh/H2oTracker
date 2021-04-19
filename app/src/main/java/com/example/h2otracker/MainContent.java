@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,6 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -49,7 +51,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
 
     TextView quotes, waterQuantity;
-    String[] motiQuotes = {"Good Quote", "fds", "fds", "fsd"};
+    String[] motiQuotes = {"You're so much stronger than your excuses", "Don't compare yourself to others.", "Don't Quit.", "Don't tell everyone your plans, instead show them your results.","“I choose to make the rest of my life, the best of my life.”","Nothing can dim the light that shines from within.”","Hustlers don’t sleep, they na"};
     Button addWater, nextQuote, changeCup, changeDrink;
     RecyclerView recyclerView;
     ProgressBar progressBar;
@@ -317,7 +319,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         });
 
 
-        quotesChange();
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -336,7 +338,11 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             }
         });
 
-
+        try {
+            quotesChange();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void calculateWaterIntake() {
@@ -410,13 +416,24 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
-    public void quotesChange() {
-        String c;
-        for (int i = 0; i < motiQuotes.length; i++) {
-            c = motiQuotes[i];
-            quotes.setText(String.valueOf(c));
-        }
+    public void quotesChange() throws InterruptedException {
+        Random random = new Random();
+        int h = random.nextInt((5-0)+1) + 0;
+        quotes.setText(String.valueOf(motiQuotes[h]));
+        new CountDownTimer(5000,1000) {
 
+            @Override
+            public void onTick(long millisUntilFinished) {}
+
+            @Override
+            public void onFinish() {
+                try {
+                    quotesChange();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     private void createNotificationChannel() {
