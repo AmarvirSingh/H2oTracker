@@ -10,9 +10,10 @@
     >
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login" />
+        android:background="@drawable/day_blue" />
 
     <TextView
         android:layout_width="match_parent"

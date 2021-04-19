@@ -34,6 +34,8 @@ public class ProfileActivity extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseAuth mAuth;
     FirebaseUser user;
+    View dayView;
+
 
     SharedPreferences sharedPreferences;
 
@@ -53,6 +55,22 @@ public class ProfileActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("User");
 
+        sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+
+
+
+        boolean bool = sharedPreferences.getBoolean("isDarkModeOn",false);
+        dayView = findViewById(R.id.dayView);
+
+
+        if(bool)
+        {
+            dayView.setBackgroundResource(R.drawable.night_blue);
+
+        }
+        else{
+            dayView.setBackgroundResource(R.drawable.day_blue);
+        }
         /*
 
         account = GoogleSignIn.getLastSignedInAccount(this);

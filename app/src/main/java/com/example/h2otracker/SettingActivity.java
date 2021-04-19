@@ -42,23 +42,29 @@ List<Integer> images;
 
 TextView feedback ,shareBy,notificationTone;
 
+View view;
+
+     boolean isDarkModeOn;
 
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        final boolean isDarkModeOn = getSharedPreferences("sharedPrefs",MODE_PRIVATE).getBoolean("isDarkModeOn",false);
+        isDarkModeOn = getSharedPreferences("sharedPrefs",MODE_PRIVATE).getBoolean("isDarkModeOn",false);
 
 
         if(isDarkModeOn)
         {
+            view.setBackgroundResource(R.drawable.night_blue);
+
             dark_switch.setChecked(true);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
         else
         {
+            view.setBackgroundResource(R.drawable.day_blue);
             dark_switch.setChecked(false);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -73,6 +79,8 @@ TextView feedback ,shareBy,notificationTone;
         setContentView(R.layout.activity_setting);
       //  card1 = findViewById(R.id.card1);
        // dataList = findViewById(R.id.datalist);
+
+        view = findViewById(R.id.view);
 
 
 
