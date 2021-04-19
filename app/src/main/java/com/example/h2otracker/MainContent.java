@@ -1,40 +1,39 @@
 package com.example.h2otracker;
 
-import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.h2otracker.HelperClass.HelperClass;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.h2otracker.serviceAndBroadcasts.MyBroadcast;
+/*import com.example.h2otracker.serviceAndBroadcasts.MyService;
+import com.example.h2otracker.serviceAndBroadcasts.Restarter;*/
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -43,7 +42,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainContent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -69,6 +69,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo;
 
 
+    Intent mServiceIntent;
+
+
     @Override
     protected void onStart() {
 
@@ -81,10 +84,21 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         super.onStart();
     }
 
+    /*@Override
+    protected void onDestroy() {
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("restartservice");
+        broadcastIntent.setClass(this, Restarter.class);
+        this.sendBroadcast(broadcastIntent);
+        super.onDestroy();
+    }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_content);
+
+        createNotificationChannel();
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -101,6 +115,14 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         calculateWaterIntake();
 
         totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake", 0);
+/*
+        // service code
+
+        mYourService = new MyService();
+        mServiceIntent = new Intent(this, mYourService.getClass());
+        if (!isMyServiceRunning(mYourService.getClass())) {
+            startService(mServiceIntent);
+        }*/
 
 
         //setting up firebase
@@ -108,6 +130,30 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         user = mAuth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("User");
 
+/*
+
+        Timer timer = new Timer();
+        final Handler handler = new Handler();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask, 5000);
+*/
+        Intent intent = new Intent(MainContent.this, MyBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainContent.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10000, pendingIntent); // every 10 seconds
 
 
 
@@ -152,7 +198,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                 int pro = progressBar.getProgress();
                 if (pro < progressBar.getMax()) {
                     progressBar.setProgress(pro + intake);
-                    waterQuantity.setText(pro + intake + "/ " + totalIntake);
+                    waterQuantity.setText(pro + intake + " ml / " + totalIntake + "ml");
                     // adding data to array list to use in recycler view
                   /*  type.add(changeDrink.getText().toString().trim());
                     amount.add(addWater.getText().toString().trim() + " ml");*/
@@ -322,17 +368,17 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         } else if (weight >= 55 && weight < 65) {
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight", 1900).apply();
         } else if (weight >= 65 && weight < 75) {
-                sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight", 2200).apply();
-        }else if (weight >=75 && weight < 85){
-            sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight",2600).apply();
+            sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight", 2200).apply();
+        } else if (weight >= 75 && weight < 85) {
+            sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight", 2600).apply();
         }
 
-        int total1 = sharedPreferencesWaterIntake.getInt("totalIntakeAge",0);
-        int totol2 = sharedPreferencesWaterIntake.getInt("totalIntakeWeight",0);
+        int total1 = sharedPreferencesWaterIntake.getInt("totalIntakeAge", 0);
+        int totol2 = sharedPreferencesWaterIntake.getInt("totalIntakeWeight", 0);
 
-        int finalTotal = (total1 + totol2)/2;
+        int finalTotal = (total1 + totol2) / 2;
 
-        sharedPreferencesWaterIntake.edit().putInt("totalIntake",finalTotal).apply();
+        sharedPreferencesWaterIntake.edit().putInt("totalIntake", finalTotal).apply();
 
         Toast.makeText(this, "Total Amount of water needed is  " + finalTotal, Toast.LENGTH_LONG).show();
 
@@ -372,6 +418,38 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         }
 
     }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "NewChannel";
+            String description = " this is the description ";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("inform", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    // for service
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("Service status", "Running");
+                return true;
+            }
+        }
+        Log.i ("Service status", "Not running");
+        return false;
+    }
+
+
+
 
 
 }
