@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,8 +60,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     DatabaseReference reference;
     FirebaseAuth mAuth;
     FirebaseUser user;
-
-
+ImageView img;
+ String[] images = {"medal.png","trophy.png"};
     private int totalIntake;
     private int totalAmount = 0;
 
@@ -163,11 +164,11 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         quotes = findViewById(R.id.quotesID);
         addWater = findViewById(R.id.AddWater);
         waterQuantity = findViewById(R.id.quantity);
-        nextQuote = findViewById(R.id.nextText);
+       // nextQuote = findViewById(R.id.nextText);
         changeCup = findViewById(R.id.changeCup);
         changeDrink = findViewById(R.id.changeDrink);
         recyclerView = findViewById(R.id.recyclerView);
-
+        img=findViewById(R.id.imageView);
         changeDrink.setText("Water");
 
         helperClass = new HelperClass(this);
@@ -251,6 +252,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + smallSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("100");
                         dialog.dismiss();
+
                     }
                 });
                 mediumSize.setOnClickListener(new View.OnClickListener() {
@@ -259,7 +261,10 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + mediumSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("200");
                         dialog.dismiss();
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.large));
                     }
+
+
                 });
                 largeSize.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -267,6 +272,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + largeSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("300");
                         dialog.dismiss();
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.medal));
                     }
                 });
                 dialog.show();
@@ -400,6 +406,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.acheivements:
+                startActivity(new Intent(this, Achievements.class));
+                return true;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingActivity.class));
                 return true;
@@ -420,7 +429,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         Random random = new Random();
         int h = random.nextInt((5-0)+1) + 0;
         quotes.setText(String.valueOf(motiQuotes[h]));
-        new CountDownTimer(5000,1000) {
+        new CountDownTimer(5000,2000) {
 
             @Override
             public void onTick(long millisUntilFinished) {}
