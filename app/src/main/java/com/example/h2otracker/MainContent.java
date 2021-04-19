@@ -11,12 +11,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -49,7 +52,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
 
     TextView quotes, waterQuantity;
-    String[] motiQuotes = {"Good Quote", "fds", "fds", "fsd"};
+    String[] motiQuotes = {"You're so much stronger than your excuses", "Don't compare yourself to others.", "Don't Quit.", "Don't tell everyone your plans, instead show them your results.","“I choose to make the rest of my life, the best of my life.”","Nothing can dim the light that shines from within.”","Hustlers don’t sleep, they na"};
     Button addWater, nextQuote, changeCup, changeDrink;
     RecyclerView recyclerView;
     ProgressBar progressBar;
@@ -57,8 +60,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     DatabaseReference reference;
     FirebaseAuth mAuth;
     FirebaseUser user;
-
-
+ImageView img;
+ String[] images = {"medal.png","trophy.png"};
     private int totalIntake;
     private int totalAmount = 0;
 
@@ -161,11 +164,11 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         quotes = findViewById(R.id.quotesID);
         addWater = findViewById(R.id.AddWater);
         waterQuantity = findViewById(R.id.quantity);
-        nextQuote = findViewById(R.id.nextText);
+       // nextQuote = findViewById(R.id.nextText);
         changeCup = findViewById(R.id.changeCup);
         changeDrink = findViewById(R.id.changeDrink);
         recyclerView = findViewById(R.id.recyclerView);
-
+        img=findViewById(R.id.imageView);
         changeDrink.setText("Water");
 
         helperClass = new HelperClass(this);
@@ -249,6 +252,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + smallSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("100");
                         dialog.dismiss();
+
                     }
                 });
                 mediumSize.setOnClickListener(new View.OnClickListener() {
@@ -257,7 +261,10 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + mediumSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("200");
                         dialog.dismiss();
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.large));
                     }
+
+
                 });
                 largeSize.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -265,6 +272,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + largeSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("300");
                         dialog.dismiss();
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.medal));
                     }
                 });
                 dialog.show();
@@ -317,7 +325,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         });
 
 
-        quotesChange();
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -336,7 +344,11 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             }
         });
 
-
+        try {
+            quotesChange();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void calculateWaterIntake() {
@@ -394,6 +406,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.acheivements:
+                startActivity(new Intent(this, Achievements.class));
+                return true;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingActivity.class));
                 return true;
@@ -410,13 +425,24 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
-    public void quotesChange() {
-        String c;
-        for (int i = 0; i < motiQuotes.length; i++) {
-            c = motiQuotes[i];
-            quotes.setText(String.valueOf(c));
-        }
+    public void quotesChange() throws InterruptedException {
+        Random random = new Random();
+        int h = random.nextInt((5-0)+1) + 0;
+        quotes.setText(String.valueOf(motiQuotes[h]));
+        new CountDownTimer(5000,2000) {
 
+            @Override
+            public void onTick(long millisUntilFinished) {}
+
+            @Override
+            public void onFinish() {
+                try {
+                    quotesChange();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     private void createNotificationChannel() {

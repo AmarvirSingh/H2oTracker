@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.h2otracker">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
@@ -16,9 +17,18 @@
         <activity android:name=".Achievements">
         </activity>
         <activity
+
             android:name=".MainContent"
+
             android:label="@string/title_activity_main_content"
-            android:theme="@style/Theme.H2OTracker.NoActionBar" />
+            android:theme="@style/Theme.H2OTracker.NoActionBar"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".StaticAndHistoryActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SettingActivity" />
@@ -26,18 +36,15 @@
             android:name=".RegisterActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <receiver android:name=".serviceAndBroadcasts.MyBroadcast"/>
         <receiver
             android:name=".serviceAndBroadcasts.Restarter"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="MissingClass">
             <intent-filter>
                 <action android:name="restartservice" />
             </intent-filter>
