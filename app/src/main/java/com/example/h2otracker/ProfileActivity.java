@@ -47,7 +47,6 @@ public class ProfileActivity extends AppCompatActivity {
         profileName = findViewById(R.id.profileName);
         profileHeight = findViewById(R.id.profileHeight);
         profileWeight = findViewById(R.id.profileWeight);
-        logout = findViewById(R.id.logout);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -65,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
 */
+/*
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
+*/
 
 
         reference.child(user.getUid()).child("UserInfo").addValueEventListener(new ValueEventListener() {
