@@ -27,9 +27,6 @@ import com.example.h2otracker.HelperClass.HelperClass;
 import com.example.h2otracker.serviceAndBroadcasts.MyBroadcast;
 /*import com.example.h2otracker.serviceAndBroadcasts.MyService;
 import com.example.h2otracker.serviceAndBroadcasts.Restarter;*/
-import com.example.h2otracker.serviceAndBroadcasts.sendDataBroadcast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,7 +34,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -46,11 +42,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -148,10 +141,17 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
         //calculating waterIntake
         calculateWaterIntake();
-        sendDataTOFirebase();
 
 
+//        totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake", 0);
+/*
+        // service code
 
+        mYourService = new MyService();
+        mServiceIntent = new Intent(this, mYourService.getClass());
+        if (!isMyServiceRunning(mYourService.getClass())) {
+            startService(mServiceIntent);
+        }*/
 
 
         //setting up firebase
@@ -179,22 +179,12 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 */
         Intent intent = new Intent(MainContent.this, MyBroadcast.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MainContent.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Intent dataIntent = new Intent(MainContent.this, sendDataBroadcast.class);
-        dataIntent.putExtra("amount",totalAmount);
-        PendingIntent dataPendingIntent = PendingIntent.getBroadcast(MainContent.this,0,dataIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10000, pendingIntent); // every 10 seconds
 
-        Calendar date = Calendar.getInstance();
 
-        date.set(Calendar.HOUR, 23);
-        date.set(Calendar.MINUTE, 35);
-        date.set(Calendar.SECOND, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,date.getTimeInMillis(),dataPendingIntent);
 
         changeDrink.setText("Water");
 
@@ -223,11 +213,11 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         waterQuantity.setText(totalAmount + " ml /" + totalIntake + " ml");
 
         addWater.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 int intake = Integer.parseInt(addWater.getText().toString()); // converting string to integer value
                 int pro = progressBar.getProgress();
+                int c = progressBar.getMax();
                 if (pro < progressBar.getMax()) {
                     progressBar.setProgress(pro + intake);
                     waterQuantity.setText(pro + intake + " ml / " + totalIntake + "ml");
@@ -236,14 +226,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     amount.add(addWater.getText().toString().trim() + " ml");*/
                     Calendar calendar = Calendar.getInstance();
                     String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
-                    LocalDate date = null;
-                    DateTimeFormatter formatter = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        date = LocalDate.now();
-                        formatter = DateTimeFormatter.ofPattern("dd");
-                    }
-
-                    String text = date.format(formatter);
 
 
                     long result = helperClass.addRecord(addWater.getText().toString(), changeDrink.getText().toString(), currentTime);
@@ -253,34 +235,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "Sorry can not store data For this drink", Toast.LENGTH_SHORT).show();
                     }
 
-                    // for adding history to realtime database
-                    FirebaseHistoryClass intakeHistory = new FirebaseHistoryClass(pro+intake,text);
-
-                    reference.child(user.getUid()).child("History").child("waterIntake"+text).child("amountAndDate").setValue(intakeHistory).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(MainContent.this, "added to firebase", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(MainContent.this, "not added to firebase", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                    // for each drinks respective amount
-                        calculateCategory();
-
-
-                    reference.child(user.getUid()).child("History").child("waterIntake"+text).child("Category").setValue(intakeHistory).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(MainContent.this, "added to firebase", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(MainContent.this, "not added to firebase", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
 
                     refreshRecyclerView();
 
@@ -326,7 +280,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + smallSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("100");
                         dialog.dismiss();
-                        img.setImageDrawable(getResources().getDrawable(R.drawable.app_icon));
+
                     }
                 });
                 mediumSize.setOnClickListener(new View.OnClickListener() {
@@ -346,7 +300,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + largeSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("300");
                         dialog.dismiss();
-                        img.setImageDrawable(getResources().getDrawable(R.drawable.medium));
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.medal));
                     }
                 });
                 dialog.show();
@@ -422,17 +376,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    private void calculateCategory() {
-
-
-    }
-
-    private void sendDataTOFirebase() {
-        Calendar calendar = Calendar.getInstance();
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
     private void calculateWaterDrinked() {

@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:width="120dp"
                 android:padding="20dp"
-                android:text="8000ml"
+                android:text="Drinked 8000ml"
                 android:textFontWeight="800" />
 
             <ImageView
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:width="120dp"
                 android:padding="20dp"
-                android:text="6000ml"
+                android:text=" Drinked 6000ml"
                 android:textFontWeight="700" />
 
             <ImageView
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:width="120dp"
                 android:padding="20dp"
-                android:text="10000ml"
+                android:text="Drinked 10000ml"
                 android:textFontWeight="700" />
 
             <ImageView
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:width="120dp"
                 android:padding="20dp"
-                android:text="12000ml"
+                android:text=" Drinked 12000ml"
                 android:textFontWeight="700" />
 
             <ImageView
@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:width="120dp"
                 android:padding="20dp"
-                android:text="15000ml"
+                android:text="Drinked 15000ml"
                 android:textFontWeight="700" />
 
             <ImageView
@@ -236,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:width="120dp"
                 android:padding="20dp"
-                android:text="20000ml"
+                android:text="Drinked 20000ml"
                 android:textFontWeight="700" />
 
             <ImageView
@@ -272,7 +272,7 @@
                 android:layout_height="wrap_content"
                 android:width="120dp"
                 android:padding="20dp"
-                android:text="25000ml"
+                android:text="Drinked 25000ml"
                 android:textFontWeight="700" />
 
             <ImageView
