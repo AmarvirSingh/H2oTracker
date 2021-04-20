@@ -39,39 +39,39 @@ public class Achievements extends AppCompatActivity {
         helperClass = new HelperClass(this);
         calculateWaterDrinked();
 
-        if (totalAmount >= 6000 && totalAmount < 8000) {
+        if (totalAmount >= 2000 && totalAmount < 3000) {
             img6000.setVisibility(View.VISIBLE);
-        } else if (totalAmount >= 8000 && totalAmount < 10000) {
+        } else if (totalAmount >= 3000 && totalAmount < 4000) {
             img6000.setVisibility(View.VISIBLE);
             img8000.setVisibility(View.VISIBLE);
 
 
-        } else if (totalAmount >= 10000 && totalAmount < 12000) {
+        } else if (totalAmount >= 4000 && totalAmount < 5000) {
             img6000.setVisibility(View.VISIBLE);
             img8000.setVisibility(View.VISIBLE);
             img10000.setVisibility(View.VISIBLE);
 
 
-        } else if (totalAmount >= 12000 && totalAmount < 15000) {
+        } else if (totalAmount >= 5000 && totalAmount < 6000) {
             img6000.setVisibility(View.VISIBLE);
             img8000.setVisibility(View.VISIBLE);
             img10000.setVisibility(View.VISIBLE);
             img12000.setVisibility(View.VISIBLE);
 
-        } else if (totalAmount >= 15000 && totalAmount < 20000) {
+        } else if (totalAmount >= 6000 && totalAmount < 7000) {
             img6000.setVisibility(View.VISIBLE);
             img8000.setVisibility(View.VISIBLE);
             img10000.setVisibility(View.VISIBLE);
             img12000.setVisibility(View.VISIBLE);
             img15000.setVisibility(View.VISIBLE);
-        } else if (totalAmount >= 20000 && totalAmount < 25000) {
+        } else if (totalAmount >= 7000 && totalAmount < 8000) {
             img6000.setVisibility(View.VISIBLE);
             img8000.setVisibility(View.VISIBLE);
             img10000.setVisibility(View.VISIBLE);
             img12000.setVisibility(View.VISIBLE);
             img15000.setVisibility(View.VISIBLE);
             img20000.setVisibility(View.VISIBLE);
-        } else if (totalAmount >= 25000 && totalAmount < 30000) {
+        } else if (totalAmount >= 8000 && totalAmount < 9000) {
             img6000.setVisibility(View.VISIBLE);
             img8000.setVisibility(View.VISIBLE);
             img10000.setVisibility(View.VISIBLE);
@@ -79,7 +79,7 @@ public class Achievements extends AppCompatActivity {
             img15000.setVisibility(View.VISIBLE);
             img20000.setVisibility(View.VISIBLE);
             img25000.setVisibility(View.VISIBLE);
-        } else if (totalAmount >= 30000) {
+        } else if (totalAmount >= 10000) {
             img6000.setVisibility(View.VISIBLE);
             img8000.setVisibility(View.VISIBLE);
             img10000.setVisibility(View.VISIBLE);
