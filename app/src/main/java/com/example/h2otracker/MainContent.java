@@ -73,23 +73,16 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     String[] images = {"medal.png", "trophy.png"};
     String UserName = "";
     private int totalIntake;
-    private int totalAmount;
-
-    // array list for different water intakes
-    ArrayList<Integer> soda = new ArrayList<Integer>();
-    ArrayList<Integer> water = new ArrayList<Integer>();
-    ArrayList<Integer> coffee = new ArrayList<Integer>();
-
-    int totalSoda = 0;
-    int totalWater = 0;
-    int totalCoffee = 0;
-
+    private int totalAmount ;
 
     HelperClass helperClass;
     HistoryAdapter historyAdapter;
     ArrayList<HistoryClass> historyClassArrayList;
 
-    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo, simpleSharedPreference;
+    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo;
+
+
+    Intent mServiceIntent;
 
 
     @Override
@@ -113,7 +106,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         super.onDestroy();
     }*/
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,7 +115,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         // making references
         quotes = findViewById(R.id.quotesID);
@@ -140,11 +131,11 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         helperClass = new HelperClass(this);
 
         // using shared reference for setting background image if night mode is enabled
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn", false);
-        if (isDarkModeOn) {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn",false);
+        if (isDarkModeOn){
             view.setBackgroundResource(R.drawable.night_blue);
-        } else {
+        }else{
             view.setBackgroundResource(R.drawable.day_blue);
         }
 
@@ -154,12 +145,13 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         // shared preference for user info
         sharedPreferencesForUserInfo = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
-        //simple shared preference
-        simpleSharedPreference = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
 
         //calculating waterIntake
         calculateWaterIntake();
         sendDataTOFirebase();
+
+
+
 
 
         //setting up firebase
@@ -189,8 +181,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MainContent.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent dataIntent = new Intent(MainContent.this, sendDataBroadcast.class);
-        dataIntent.putExtra("amount", totalAmount);
-        PendingIntent dataPendingIntent = PendingIntent.getBroadcast(MainContent.this, 0, dataIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        dataIntent.putExtra("amount",totalAmount);
+        PendingIntent dataPendingIntent = PendingIntent.getBroadcast(MainContent.this,0,dataIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
@@ -202,9 +194,10 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         date.set(Calendar.HOUR, 23);
         date.set(Calendar.MINUTE, 35);
         date.set(Calendar.SECOND, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTimeInMillis(), dataPendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,date.getTimeInMillis(),dataPendingIntent);
 
         changeDrink.setText("Water");
+
 
 
         try {
@@ -261,42 +254,30 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     }
 
                     // for adding history to realtime database
-                    FirebaseHistoryClass intakeHistory = new FirebaseHistoryClass(pro + intake, text);
+                    FirebaseHistoryClass intakeHistory = new FirebaseHistoryClass(pro+intake,text);
 
-                    reference.child(user.getUid()).child("History").child("waterIntake" + text).child("amountAndDate").setValue(intakeHistory).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    reference.child(user.getUid()).child("History").child("waterIntake"+text).child("amountAndDate").setValue(intakeHistory).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
+                            if (task.isSuccessful()){
                                 Toast.makeText(MainContent.this, "added to firebase", Toast.LENGTH_SHORT).show();
-                            } else {
+                            }else{
                                 Toast.makeText(MainContent.this, "not added to firebase", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
 
-                    if (changeDrink.getText().toString().equalsIgnoreCase("water")) {
-                        Log.i("TAG", "size of water qarrayt: "+water.size());
-                        water = helperClass.getTotalWater();
-
-                    } else if (changeDrink.getText().toString().equalsIgnoreCase("coffee")) {
-                        coffee = helperClass.getTotalCoffee();
-                    } else if (changeDrink.getText().toString().equalsIgnoreCase("soda")) {
-                       soda = helperClass.getTotalSoda();
-                    }
                     // for each drinks respective amount
-                    calculateCategory(water, coffee, soda);
-                    Category cat = new Category(totalSoda, totalWater, totalCoffee, text);
+                        calculateCategory();
 
-                    reference.child(user.getUid()).child("History").child("waterIntake" + text).child("Category").setValue(cat).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    reference.child(user.getUid()).child("History").child("waterIntake"+text).child("Category").setValue(intakeHistory).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(MainContent.this, "Added category", Toast.LENGTH_SHORT).show();
-
-                                totalWater = 0; totalSoda = 0; totalCoffee = 0;
-
-                            } else {
-                                Toast.makeText(MainContent.this, "not added to category", Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful()){
+                                Toast.makeText(MainContent.this, "added to firebase", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(MainContent.this, "not added to firebase", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -309,11 +290,11 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
             private void refreshRecyclerView() {
                 try {
-                    if (historyClassArrayList.size() > 0) {
+                    if (historyClassArrayList.size()>0){
                         historyClassArrayList.clear();
                     }
-                } catch (NullPointerException e) {
-                    Toast.makeText(MainContent.this, "", Toast.LENGTH_SHORT).show();
+                }catch (NullPointerException e){
+                    Toast.makeText(MainContent.this,"", Toast.LENGTH_SHORT).show();
                 }
 
                 historyClassArrayList = helperClass.getHistory();
@@ -443,22 +424,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
-    private void calculateCategory(ArrayList<Integer> water, ArrayList<Integer> coffee, ArrayList<Integer> soda) {
-        try {
-            for (int i = 0; i < water.size(); i++) {
-                totalWater += water.get(i);
-            }
+    private void calculateCategory() {
 
-        for (int i = 0; i < coffee.size(); i++) {
-            totalCoffee += coffee.get(i);
-        }
-        for (int i = 0; i < soda.size(); i++) {
-            totalSoda += soda.get(i);
-        }
 
-    }catch (Exception e){
-
-        }
     }
 
     private void sendDataTOFirebase() {
@@ -470,7 +438,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     private void calculateWaterDrinked() {
         ArrayList<Integer> intakedWater = helperClass.totalIntakeByUser();
         int a = 0;
-        for (int i = 0; i < intakedWater.size(); i++) {
+        for (int i= 0; i < intakedWater.size(); i++){
             a += intakedWater.get(i);
 
         }
@@ -483,24 +451,22 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         //receiving this information from profile activity
         //edited : we can not get information from profile activity because our first main screen is this activity
         //so we have to get info from the RealTime Database
-        UserName = sharedPreferencesForUserInfo.getString("name", "Mundi");
+        UserName = sharedPreferencesForUserInfo.getString("name","Mundi");
         int userAge = sharedPreferencesForUserInfo.getInt("age", 0);
         int weight = sharedPreferencesForUserInfo.getInt("weight", 0);
         int height = sharedPreferencesForUserInfo.getInt("height", 0);
         String gender = sharedPreferencesForUserInfo.getString("gender", "");
 
-        Toast.makeText(this, "age " + userAge, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "weight " + weight, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "gender " + gender, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "name " + UserName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "age "+userAge, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "weight "+weight, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "gender "+gender, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "name "+UserName, Toast.LENGTH_SHORT).show();
 
         if (userAge < 13) {
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 1700).apply();
-        }
-        if (userAge >= 14 && userAge <= 18) {
+        } if (userAge >= 14 && userAge <= 18) {
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 2300).apply();
-        }
-        if (userAge >= 19) {
+        } if (userAge >= 19) {
             if (gender.equalsIgnoreCase("male")) {
                 sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 3100).apply();
             } else {
@@ -519,12 +485,13 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         }
 
 
+
         int total1 = sharedPreferencesWaterIntake.getInt("totalIntakeAge", 0);
         int totol2 = sharedPreferencesWaterIntake.getInt("totalIntakeWeight", 0);
 
-        Toast.makeText(this, "totalIntakeAge" + total1, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "totalIntakeWeight" + totol2, Toast.LENGTH_SHORT).show();
-        int finalTotal = (total1 + totol2) / 2;
+        Toast.makeText(this, "totalIntakeAge"+total1, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "totalIntakeWeight"+totol2, Toast.LENGTH_SHORT).show();
+        int finalTotal = (total1 + totol2 * 2 ) / 2;
 
         totalIntake = finalTotal;
         sharedPreferencesWaterIntake.edit().putInt("totalIntake", finalTotal).apply();
@@ -592,8 +559,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("inform", name, importance);
             channel.setDescription(description);
-
-            channel.setSound(null, null);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
