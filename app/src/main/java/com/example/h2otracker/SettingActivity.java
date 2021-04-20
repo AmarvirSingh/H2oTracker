@@ -36,6 +36,7 @@ public class SettingActivity extends AppCompatActivity {
 //RecyclerView dataList;
 
     public static String toneName = "";
+    public static String toneName1 = "";
 
     CardView card1,card2,card3,card4,card5;
 
@@ -46,6 +47,8 @@ List<Integer> images;
 TextView feedback ,shareBy,notificationTone;
 
 View view;
+//taking shared preference for setting notifiaction tone
+    SharedPreferences sharedPreferences;
 
      boolean isDarkModeOn;
 
@@ -53,6 +56,7 @@ View view;
     @Override
     protected void onStart() {
         super.onStart();
+        sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
 
         isDarkModeOn = getSharedPreferences("sharedPrefs",MODE_PRIVATE).getBoolean("isDarkModeOn",false);
 
@@ -109,7 +113,7 @@ View view;
                     public void onClick(View v) {
                         Toast.makeText(SettingActivity.this, "" + tone1.getText(), Toast.LENGTH_SHORT).show();
                         //   addWater.setText("100");
-                        toneName = "tone1";
+                       sharedPreferences.edit().putString("tone","tone1").apply();
                         dialog.dismiss();
                     }
                 });
@@ -120,7 +124,7 @@ View view;
                     public void onClick(View v) {
                         Toast.makeText(SettingActivity.this, "" + tone2.getText(), Toast.LENGTH_SHORT).show();
                         //   addWater.setText("100");
-                        toneName = "tone2";
+                        sharedPreferences.edit().putString("tone","tone2").apply();
                         dialog.dismiss();
                     }
                 });
