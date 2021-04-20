@@ -124,13 +124,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         helperClass = new HelperClass(this);
 
         // using shared reference for setting background image if night mode is enabled
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
-        boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn",false);
-        if (isDarkModeOn){
-            view.setBackgroundResource(R.drawable.night_blue);
-        }else{
-            view.setBackgroundResource(R.drawable.day_blue);
-        }
+
 
         // using shared preference for total intake
         sharedPreferencesWaterIntake = getSharedPreferences("WaterIntake", MODE_PRIVATE);
@@ -280,7 +274,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + smallSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("100");
                         dialog.dismiss();
-
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.app_icon));
                     }
                 });
                 mediumSize.setOnClickListener(new View.OnClickListener() {
@@ -300,7 +294,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + largeSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("300");
                         dialog.dismiss();
-                        img.setImageDrawable(getResources().getDrawable(R.drawable.medal));
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.medium));
                     }
                 });
                 dialog.show();
