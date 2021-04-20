@@ -584,6 +584,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("inform", name, importance);
             channel.setDescription(description);
+            channel.setSound(null,null);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);

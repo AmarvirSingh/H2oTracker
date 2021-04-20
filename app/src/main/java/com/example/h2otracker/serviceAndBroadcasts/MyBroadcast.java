@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.util.Log;
+import android.widget.MediaController;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.h2otracker.R;
+import com.example.h2otracker.SettingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,12 +26,13 @@ import com.google.firebase.database.ValueEventListener;
 public class MyBroadcast extends BroadcastReceiver {
 
 
+    String tone = "";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("TAG", "onReceive: ");
         createNotification(context);
-
+tone = SettingActivity.toneName;
 
     }
 
@@ -44,6 +48,15 @@ public class MyBroadcast extends BroadcastReceiver {
       /*  Intent notificationIntent = new Intent(context, MyBroadcast.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);*/
+        mBuilder.setSound(null);
+
+      if (tone.equalsIgnoreCase("tone1")){
+          MediaPlayer mp= MediaPlayer.create(context,R.raw.tone1);
+          mp.start();
+      } else{
+          MediaPlayer mp= MediaPlayer.create(context,R.raw.tone2);
+          mp.start();
+      }
 
 
 
