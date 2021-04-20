@@ -256,7 +256,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     // for adding history to realtime database
                     FirebaseHistoryClass intakeHistory = new FirebaseHistoryClass(pro+intake,text);
 
-                    reference.child(user.getUid()).child("History").child("waterIntake"+text).child("amountAndDate").setValue(intakeHistory).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    reference.child(user.getUid()).child("History").child(text).setValue(intakeHistory).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
@@ -267,7 +267,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         }
                     });
 
-                    // for each drinks respective amount
+                    /*// for each drinks respective amount
                         calculateCategory();
 
 
@@ -281,7 +281,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                             }
                         }
                     });
-
+*/
                     refreshRecyclerView();
 
 
