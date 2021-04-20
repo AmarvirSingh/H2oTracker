@@ -5,17 +5,36 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.h2otracker.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MyBroadcast extends BroadcastReceiver {
+
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("TAG", "onReceive: ");
+        createNotification(context);
 
+
+    }
+
+
+
+    private void createNotification(Context context) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context,"inform");
         mBuilder.setContentTitle("title notioficatioon");
         mBuilder.setContentText("thisnis text 0");
@@ -30,6 +49,5 @@ public class MyBroadcast extends BroadcastReceiver {
 
         NotificationManagerCompat manager = NotificationManagerCompat.from(context);
         manager.notify(100,mBuilder.build());
-
     }
 }
