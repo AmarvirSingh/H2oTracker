@@ -76,23 +76,20 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     private int totalAmount;
 
     // array list for different water intakes
-    ArrayList<Float> soda = new ArrayList<Float>();
-    ArrayList<Float> water = new ArrayList<Float>();
-    ArrayList<Float> coffee = new ArrayList<Float>();
+    ArrayList<Integer> soda = new ArrayList<Integer>();
+    ArrayList<Integer> water = new ArrayList<Integer>();
+    ArrayList<Integer> coffee = new ArrayList<Integer>();
 
-    float totalSoda = 0;
-    float totalWater = 0;
-    float totalCoffee = 0;
+    int totalSoda = 0;
+    int totalWater = 0;
+    int totalCoffee = 0;
 
 
     HelperClass helperClass;
     HistoryAdapter historyAdapter;
     ArrayList<HistoryClass> historyClassArrayList;
 
-    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo,simpleSharedPreference;
-
-
-    Intent mServiceIntent;
+    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo, simpleSharedPreference;
 
 
     @Override
@@ -116,6 +113,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         super.onDestroy();
     }*/
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +123,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         // making references
         quotes = findViewById(R.id.quotesID);
@@ -156,7 +155,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         sharedPreferencesForUserInfo = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
         //simple shared preference
-        simpleSharedPreference = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        simpleSharedPreference = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
 
         //calculating waterIntake
         calculateWaterIntake();
@@ -276,24 +275,26 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                     });
 
                     if (changeDrink.getText().toString().equalsIgnoreCase("water")) {
-                        water.add(Float.parseFloat(String.valueOf(intake)));
+                        Log.i("TAG", "size of water qarrayt: "+water.size());
+                        water = helperClass.getTotalWater();
+
                     } else if (changeDrink.getText().toString().equalsIgnoreCase("coffee")) {
-                        coffee.add(Float.parseFloat(String.valueOf(intake)));
+                        coffee = helperClass.getTotalCoffee();
                     } else if (changeDrink.getText().toString().equalsIgnoreCase("soda")) {
-                        soda.add(Float.parseFloat(String.valueOf(intake)));
+                       soda = helperClass.getTotalSoda();
                     }
                     // for each drinks respective amount
                     calculateCategory(water, coffee, soda);
-                    Category cat = new Category(totalSoda,totalWater,totalCoffee,text);
+                    Category cat = new Category(totalSoda, totalWater, totalCoffee, text);
 
                     reference.child(user.getUid()).child("History").child("waterIntake" + text).child("Category").setValue(cat).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(MainContent.this, "Added category", Toast.LENGTH_SHORT).show();
-                                totalCoffee = 0;
-                                totalSoda = 0;
-                                totalWater = 0;
+
+                                totalWater = 0; totalSoda = 0; totalCoffee = 0;
+
                             } else {
                                 Toast.makeText(MainContent.this, "not added to category", Toast.LENGTH_SHORT).show();
                             }
@@ -442,10 +443,12 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
-    private void calculateCategory(ArrayList<Float> water, ArrayList<Float> coffee, ArrayList<Float> soda) {
-        for (int i = 0; i < water.size(); i++) {
-            totalWater += water.get(i);
-        }
+    private void calculateCategory(ArrayList<Integer> water, ArrayList<Integer> coffee, ArrayList<Integer> soda) {
+        try {
+            for (int i = 0; i < water.size(); i++) {
+                totalWater += water.get(i);
+            }
+
         for (int i = 0; i < coffee.size(); i++) {
             totalCoffee += coffee.get(i);
         }
@@ -453,6 +456,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             totalSoda += soda.get(i);
         }
 
+    }catch (Exception e){
+
+        }
     }
 
     private void sendDataTOFirebase() {
@@ -586,9 +592,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("inform", name, importance);
             channel.setDescription(description);
-            if (!simpleSharedPreference.getBoolean("NotificationOn",true)){
-                channel.setSound(null,null);
-            }
+
+            channel.setSound(null, null);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);

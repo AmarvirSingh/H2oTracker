@@ -92,6 +92,67 @@ public class HelperClass extends SQLiteOpenHelper {
         return  null;
     }
 
+    public ArrayList<Integer> getTotalSoda(){
+        try{
+            SQLiteDatabase db = getReadableDatabase();
+
+            ArrayList<Integer> sodaAmount = new ArrayList<>();
+            Cursor cursor = null;
+            cursor = db.rawQuery("SELECT amount FROM historyTable WHERE type = ? ;", new String[]{"Water"});
+            if (cursor.getCount() != 0){
+                while (cursor.moveToNext()){
+                    int s = cursor.getInt(1);
+                    sodaAmount.add(s);
+                }
+                cursor.close();
+            return sodaAmount;
+            }
+        }catch (Exception e){
+            Toast.makeText(context, "can noy fetch", Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
+
+    public ArrayList<Integer> getTotalWater(){
+        try{
+            SQLiteDatabase db = getReadableDatabase();
+            String query = "select amount from historyTable where type = \"Water\";";
+            ArrayList<Integer> sodaAmount = new ArrayList<>();
+            Cursor cursor = null;
+            cursor = db.rawQuery("SELECT amount FROM historyTable WHERE type = Soda",null);
+            if (cursor.getCount() != 0){
+                while (cursor.moveToNext()){
+                    int s = cursor.getInt(1);
+                    sodaAmount.add(s);
+                }
+                cursor.close();
+                return sodaAmount;
+            }
+        }catch (Exception e){
+            Toast.makeText(context, "can noy fetch", Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
+    public ArrayList<Integer> getTotalCoffee(){
+        try{
+            SQLiteDatabase db = getReadableDatabase();
+            String query = "select amount from historyTable where type = \"Water\";";
+            ArrayList<Integer> sodaAmount = new ArrayList<>();
+            Cursor cursor = null;
+            cursor = db.rawQuery("SELECT amount FROM historyTable WHERE type = Coffee",null);
+            if (cursor.getCount() != 0){
+                while (cursor.moveToNext()){
+                    int s = cursor.getInt(1);
+                    sodaAmount.add(s);
+                }
+                cursor.close();
+                return sodaAmount;
+            }
+        }catch (Exception e){
+            Toast.makeText(context, "can noy fetch", Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
     public ArrayList<Integer> totalIntakeByUser(){
 
             SQLiteDatabase database = getReadableDatabase();

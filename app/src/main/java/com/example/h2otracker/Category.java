@@ -1,12 +1,12 @@
 package com.example.h2otracker;
 
 public class Category {
-    float soda;
-    float water;
-    float coffee;
+    int soda;
+    int water;
+    int coffee;
     String date;
 
-    public Category(float soda, float water, float coffee, String date) {
+    public Category(int soda, int water, int coffee, String date) {
         this.soda = soda;
         this.water = water;
         this.coffee = coffee;
@@ -25,7 +25,7 @@ public class Category {
         return soda;
     }
 
-    public void setSoda(float soda) {
+    public void setSoda(int soda) {
         this.soda = soda;
     }
 
@@ -33,7 +33,7 @@ public class Category {
         return water;
     }
 
-    public void setWater(float water) {
+    public void setWater(int water) {
         this.water = water;
     }
 
@@ -41,7 +41,7 @@ public class Category {
         return coffee;
     }
 
-    public void setCoffee(float coffee) {
+    public void setCoffee(int coffee) {
         this.coffee = coffee;
     }
 }
