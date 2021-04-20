@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.MediaController;
@@ -25,14 +26,16 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MyBroadcast extends BroadcastReceiver {
 
-
+SharedPreferences sharedPreferences;
     String tone = "";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("TAG", "onReceive: ");
+        sharedPreferences = context.getSharedPreferences("sharedPrefs",Context.MODE_PRIVATE);
+        tone = sharedPreferences.getString("tone","");
         createNotification(context);
-tone = SettingActivity.toneName;
+
 
     }
 
@@ -50,10 +53,10 @@ tone = SettingActivity.toneName;
                 PendingIntent.FLAG_UPDATE_CURRENT);*/
         mBuilder.setSound(null);
 
-      if (tone.equalsIgnoreCase("tone1")){
+      if (tone.equalsIgnoreCase("tone1") && !sharedPreferences.getBoolean("NotificationOn",true)){
           MediaPlayer mp= MediaPlayer.create(context,R.raw.tone1);
           mp.start();
-      } else{
+      } else if (tone.equalsIgnoreCase("tone2") && !sharedPreferences.getBoolean("NotificationOn",true)){
           MediaPlayer mp= MediaPlayer.create(context,R.raw.tone2);
           mp.start();
       }

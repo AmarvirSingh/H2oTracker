@@ -89,7 +89,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     HistoryAdapter historyAdapter;
     ArrayList<HistoryClass> historyClassArrayList;
 
-    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo;
+    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo,simpleSharedPreference;
 
 
     Intent mServiceIntent;
@@ -155,6 +155,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         // shared preference for user info
         sharedPreferencesForUserInfo = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
+        //simple shared preference
+        simpleSharedPreference = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
 
         //calculating waterIntake
         calculateWaterIntake();
@@ -584,7 +586,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("inform", name, importance);
             channel.setDescription(description);
-            channel.setSound(null,null);
+            if (!simpleSharedPreference.getBoolean("NotificationOn",true)){
+                channel.setSound(null,null);
+            }
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
