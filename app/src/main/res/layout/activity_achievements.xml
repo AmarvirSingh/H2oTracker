@@ -19,11 +19,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView android:layout_gravity="center"
+    <ImageView
         android:id="@+id/imageView4"
         android:layout_width="30dp"
         android:layout_height="28dp"
+        android:layout_gravity="center"
         android:layout_marginTop="48dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView"
@@ -38,26 +40,29 @@
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6000ml"
-                android:textFontWeight="800"
-                android:padding="20dp"
                 android:width="120dp"
-                />
-            <ImageView android:layout_gravity="center"
-                android:id="@+id/imageView7"
+                android:padding="20dp"
+                android:text="8000ml"
+                android:textFontWeight="800" />
+
+            <ImageView
+                android:id="@+id/imageView8000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/medal" />
         </LinearLayout>
 
@@ -71,27 +76,30 @@
         android:layout_marginLeft="36dp"
         android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" >
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/text3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8000ml"
-                android:textFontWeight="700"
-                android:padding="20dp"
                 android:width="120dp"
-                />
-            <ImageView android:layout_gravity="center"
-                android:id="@+id/imageView71"
+                android:padding="20dp"
+                android:text="6000ml"
+                android:textFontWeight="700" />
+
+            <ImageView
+                android:id="@+id/imageView6000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/prize" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -105,26 +113,30 @@
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView1">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/text4"
-                android:text="10000ml"
-                android:textFontWeight="700"
-                android:padding="20dp"
-                android:width="120dp"
-                />
-            <ImageView android:layout_gravity="center"
-                android:id="@+id/imageView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
+            <TextView
+                android:id="@+id/text4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="120dp"
+                android:padding="20dp"
+                android:text="10000ml"
+                android:textFontWeight="700" />
+
+            <ImageView
+                android:id="@+id/imageView10000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/trophy" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -137,27 +149,31 @@
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" >
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/text5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12000ml"
-                android:textFontWeight="700"
-                android:padding="20dp"
                 android:width="120dp"
-                />
-            <ImageView android:layout_gravity="center"
-                android:id="@+id/imageView13"
+                android:padding="20dp"
+                android:text="12000ml"
+                android:textFontWeight="700" />
+
+            <ImageView
+                android:id="@+id/imageView12000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/medal" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -170,29 +186,34 @@
         android:layout_marginLeft="36dp"
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3" >
+        app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/text6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="15000ml"
-                android:textFontWeight="700"
-                android:padding="20dp"
                 android:width="120dp"
-                />
-            <ImageView android:layout_gravity="center"
-                android:id="@+id/imageView14"
+                android:padding="20dp"
+                android:text="15000ml"
+                android:textFontWeight="700" />
+
+            <ImageView
+                android:id="@+id/imageView15000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/trophy" />
-        </LinearLayout></androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
@@ -202,27 +223,30 @@
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2" >
+        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/text7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20000ml"
-                android:textFontWeight="700"
-                android:padding="20dp"
                 android:width="120dp"
-                />
-            <ImageView android:layout_gravity="center"
-                android:id="@+id/imageView99"
+                android:padding="20dp"
+                android:text="20000ml"
+                android:textFontWeight="700" />
+
+            <ImageView
+                android:id="@+id/imageView20000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/prize" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -235,27 +259,31 @@
         android:layout_marginLeft="36dp"
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView4" >
+        app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/text8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="25000ml"
-                android:textFontWeight="700"
-                android:padding="20dp"
                 android:width="120dp"
-                />
-            <ImageView android:layout_gravity="center"
-                android:id="@+id/imageView743"
+                android:padding="20dp"
+                android:text="25000ml"
+                android:textFontWeight="700" />
+
+            <ImageView
+                android:id="@+id/imageView25000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/medal" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -268,27 +296,30 @@
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView6" >
+        app:layout_constraintTop_toBottomOf="@+id/cardView6">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/text9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="30000ml"
-                android:textFontWeight="700"
-                android:padding="20dp"
                 android:width="120dp"
-                />
-            <ImageView android:layout_gravity="center"
-                android:id="@+id/imageView127"
+                android:padding="20dp"
+                android:text="30000ml"
+                android:textFontWeight="700" />
+
+            <ImageView
+                android:id="@+id/imageView30000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/trophy" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
