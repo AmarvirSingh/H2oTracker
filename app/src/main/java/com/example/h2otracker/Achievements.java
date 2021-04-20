@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.h2otracker.HelperClass.HelperClass;
@@ -35,5 +36,40 @@ public class Achievements extends AppCompatActivity {
         img30000 = findViewById(R.id.imageView30000);
         helperClass = new HelperClass(this);
         calculateWaterDrinked();
+
+        if(totalAmount >= 6000 && totalAmount < 8000) {
+            img6000.setVisibility(View.VISIBLE);
+        }
+        else if(totalAmount >= 8000 && totalAmount < 10000)
+        {
+            img6000.setVisibility(View.VISIBLE);
+            img8000.setVisibility(View.VISIBLE);
+
+
+        }
+        else if(totalAmount >= 10000 && totalAmount < 12000)
+        {
+            img6000.setVisibility(View.VISIBLE);
+            img8000.setVisibility(View.VISIBLE);
+            img10000.setVisibility(View.VISIBLE);
+
+
+        }
+        else if(totalAmount >= 12000 && totalAmount < 15000)
+        {
+            img6000.setVisibility(View.VISIBLE);
+            img8000.setVisibility(View.VISIBLE);
+            img10000.setVisibility(View.VISIBLE);
+            img12000.setVisibility(View.VISIBLE);
+
+        }
+        else if(totalAmount >= 15000 && totalAmount < 20000)
+        {
+            img6000.setVisibility(View.VISIBLE);
+            img8000.setVisibility(View.VISIBLE);
+            img10000.setVisibility(View.VISIBLE);
+            img12000.setVisibility(View.VISIBLE);
+            img15000.setVisibility(View.VISIBLE);
+        }
     }
 }
