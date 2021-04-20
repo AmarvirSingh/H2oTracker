@@ -36,7 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class    LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
 
     private static final int RC_SIGN_IN = 123;
@@ -45,19 +45,62 @@ public class    LoginActivity extends AppCompatActivity {
 
     Button btnLogin;
 
-    SharedPreferences sharedPreferencesForUserInfo ;
+    SharedPreferences sharedPreferencesForUserInfo;
 
 
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user!= null)
-        {
-            startActivity(new Intent(this, MainContent.class));
-            finish();
+        if (user != null) {
+            goToMain();
+
         }
     }
+
+    private void goToMain() {
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
+        // receiving user data from firebase database
+
+        reference.child(user.getUid()).child("UserInfo").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User profile = snapshot.getValue(User.class);
+                String name, age, height, weight, gender;
+
+                if (profile != null) {
+                    name = profile.getFullName();
+                    age = profile.getAge();
+                    height = profile.getHeight();
+                    weight = profile.getWeight();
+                    gender = profile.getGender();
+
+                    Log.d("TAG", "onDataChange: " + name);
+
+
+                    // saving data in shared preferences
+                    sharedPreferencesForUserInfo.edit().putString("name", name).apply();
+                    sharedPreferencesForUserInfo.edit().putInt("age", Integer.parseInt(age)).apply();
+                    sharedPreferencesForUserInfo.edit().putInt("height", Integer.parseInt(height)).apply();
+                    sharedPreferencesForUserInfo.edit().putInt("weight", Integer.parseInt(weight)).apply();
+                    sharedPreferencesForUserInfo.edit().putString("gender", gender).apply();
+
+                    // Toast.makeText(LoginActivity.this, "age in get user data" + sharedPreferencesForUserInfo.getInt("age", 0), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+        startActivity(new Intent(this, MainContent.class));
+        finish();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +113,14 @@ public class    LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         TextView loginForgotPassword = findViewById(R.id.loginForgotPassword);
         TextView loginCreateAccount = findViewById(R.id.loginCreateAccount);
-       // TextView loginOr = findViewById(R.id.loginOr);
+        // TextView loginOr = findViewById(R.id.loginOr);
         TextView loginUsing = findViewById(R.id.loginUsing);
-       // ImageView loginGoogle = findViewById(R.id.loginGoogle);
-      //  View bg = findViewById(R.id.bg);
+        // ImageView loginGoogle = findViewById(R.id.loginGoogle);
+        //  View bg = findViewById(R.id.bg);
 
-        sharedPreferencesForUserInfo = getSharedPreferences("UserInfo",MODE_PRIVATE);
+        sharedPreferencesForUserInfo = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
-        Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.fadein);
 
         loginTextView.setAnimation(animation);
         loginEmail.setAnimation(animation);
@@ -88,11 +131,12 @@ public class    LoginActivity extends AppCompatActivity {
 
         loginCreateAccount.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
         //getting instance
-        mAuth =FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         // creating request
         createRequest();
 
         loginUsing.setOnClickListener(v -> {
+
             signIn();
         });
 
@@ -103,13 +147,13 @@ public class    LoginActivity extends AppCompatActivity {
                 String email = loginEmail.getText().toString().trim();
                 String password = loginPassword.getText().toString().trim();
 
-                if (email.isEmpty()){
+                if (email.isEmpty()) {
                     loginEmail.setError("Please enter email");
                     loginEmail.requestFocus();
                     return;
                 }
 
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     loginEmail.setError("Please provide valid email address");
                     loginEmail.requestFocus();
                     return;
@@ -120,9 +164,9 @@ public class    LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-               // progressBarLogin.setVisibility(View.VISIBLE);
+                // progressBarLogin.setVisibility(View.VISIBLE);
 
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -149,12 +193,13 @@ public class    LoginActivity extends AppCompatActivity {
 
 
                                         // saving data in shared preferences
+                                        sharedPreferencesForUserInfo.edit().putString("name", name).apply();
                                         sharedPreferencesForUserInfo.edit().putInt("age", Integer.parseInt(age)).apply();
                                         sharedPreferencesForUserInfo.edit().putInt("height", Integer.parseInt(height)).apply();
                                         sharedPreferencesForUserInfo.edit().putInt("weight", Integer.parseInt(weight)).apply();
                                         sharedPreferencesForUserInfo.edit().putString("gender", gender).apply();
 
-                                        Toast.makeText(LoginActivity.this, "age in get user data" + sharedPreferencesForUserInfo.getInt("age", 0), Toast.LENGTH_LONG).show();
+                                        // Toast.makeText(LoginActivity.this, "age in get user data" + sharedPreferencesForUserInfo.getInt("age", 0), Toast.LENGTH_LONG).show();
                                     }
                                 }
 
@@ -174,10 +219,9 @@ public class    LoginActivity extends AppCompatActivity {
                                 }
                             }, 5000);
 
-                        }
-                        else{
+                        } else {
                             Toast.makeText(LoginActivity.this, "failed to logfin", Toast.LENGTH_SHORT).show();
-                           // progressBarLogin.setVisibility(View.GONE);
+                            // progressBarLogin.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -187,7 +231,7 @@ public class    LoginActivity extends AppCompatActivity {
         loginForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (loginEmail.getText().toString().isEmpty()){
+                if (loginEmail.getText().toString().isEmpty()) {
                     loginEmail.setError("Please enter email address then press Forgot password");
                     loginEmail.requestFocus();
                     return;
@@ -195,11 +239,11 @@ public class    LoginActivity extends AppCompatActivity {
                 mAuth.sendPasswordResetEmail(loginEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Reset password Link has been sent to the given Email ", Toast.LENGTH_LONG).show();
                             loginEmail.setText("");
 
-                        }else{
+                        } else {
                             Toast.makeText(LoginActivity.this, "Some Error occur, Please try again.", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -240,8 +284,8 @@ public class    LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(this, "signin failed "+e, Toast.LENGTH_SHORT).show();
-                Log.w("TAG", "Google sign in failed"+ e.getMessage());
+                Toast.makeText(this, "signin failed " + e, Toast.LENGTH_SHORT).show();
+                Log.w("TAG", "Google sign in failed" + e.getMessage());
             }
         }
     }
@@ -257,7 +301,7 @@ public class    LoginActivity extends AppCompatActivity {
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(LoginActivity.this, "signed in successfully" + user.getUid(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainContent.class));
+                            goToMain();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());

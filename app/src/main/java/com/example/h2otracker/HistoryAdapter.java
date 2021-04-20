@@ -18,7 +18,7 @@ import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>
 {
-   ArrayList<HistoryClass> historyClassArrayList;
+   ArrayList<HistoryClass> historyClassArrayList = null;
     Context context;
     HelperClass helperClass;
     LayoutInflater inflator;
@@ -48,7 +48,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.cell_time.setText(historyClassArrayList.get(position).getTime());
        holder.cell_amount.setText(historyClassArrayList.get(position).getAmount());
        holder.cell_type.setText(historyClassArrayList.get(position).getType());
-
 
     }
 

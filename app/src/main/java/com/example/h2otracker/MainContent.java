@@ -52,22 +52,25 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
 
     TextView quotes, waterQuantity;
-    String[] motiQuotes = {"You're so much stronger than your excuses", "Don't compare yourself to others.", "Don't Quit.", "Don't tell everyone your plans, instead show them your results.","“I choose to make the rest of my life, the best of my life.”","Nothing can dim the light that shines from within.”","Hustlers don’t sleep, they na"};
+    String[] motiQuotes = {"You're so much stronger than your excuses", "Don't compare yourself to others.", "Don't Quit.", "Don't tell everyone your plans, instead show them your results.", "“I choose to make the rest of my life, the best of my life.”", "Nothing can dim the light that shines from within.”", "Hustlers don’t sleep, they na"};
     Button addWater, nextQuote, changeCup, changeDrink;
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    View view;
+
     //firebase stuff
     DatabaseReference reference;
     FirebaseAuth mAuth;
     FirebaseUser user;
-ImageView img;
- String[] images = {"medal.png","trophy.png"};
+    ImageView img;
+    String[] images = {"medal.png", "trophy.png"};
+    String UserName = "";
     private int totalIntake;
-    private int totalAmount = 0;
+    private int totalAmount ;
 
     HelperClass helperClass;
     HistoryAdapter historyAdapter;
-    ArrayList<HistoryClass> historyClassArrayList = new ArrayList<>();
+    ArrayList<HistoryClass> historyClassArrayList;
 
     SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo;
 
@@ -103,9 +106,31 @@ ImageView img;
 
         createNotificationChannel();
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // making references
+        quotes = findViewById(R.id.quotesID);
+        addWater = findViewById(R.id.AddWater);
+        waterQuantity = findViewById(R.id.quantity);
+        // nextQuote = findViewById(R.id.nextText);
+        changeCup = findViewById(R.id.changeCup);
+        changeDrink = findViewById(R.id.changeDrink);
+        recyclerView = findViewById(R.id.recyclerView);
+        img = findViewById(R.id.imageView);
+        view = findViewById(R.id.mainPageBackground);
+        historyClassArrayList = new ArrayList<HistoryClass>();
+
+        helperClass = new HelperClass(this);
+
+        // using shared reference for setting background image if night mode is enabled
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn",false);
+        if (isDarkModeOn){
+            view.setBackgroundResource(R.drawable.night_blue);
+        }else{
+            view.setBackgroundResource(R.drawable.day_blue);
+        }
 
         // using shared preference for total intake
         sharedPreferencesWaterIntake = getSharedPreferences("WaterIntake", MODE_PRIVATE);
@@ -117,7 +142,8 @@ ImageView img;
         //calculating waterIntake
         calculateWaterIntake();
 
-        totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake", 0);
+
+//        totalIntake = sharedPreferencesWaterIntake.getInt("totalIntake", 0);
 /*
         // service code
 
@@ -160,18 +186,9 @@ ImageView img;
 
 
 
-
-        quotes = findViewById(R.id.quotesID);
-        addWater = findViewById(R.id.AddWater);
-        waterQuantity = findViewById(R.id.quantity);
-       // nextQuote = findViewById(R.id.nextText);
-        changeCup = findViewById(R.id.changeCup);
-        changeDrink = findViewById(R.id.changeDrink);
-        recyclerView = findViewById(R.id.recyclerView);
-        img=findViewById(R.id.imageView);
         changeDrink.setText("Water");
 
-        helperClass = new HelperClass(this);
+
 
         try {
             // getting history from helper class
@@ -181,10 +198,11 @@ ImageView img;
                 historyAdapter = new HistoryAdapter(MainContent.this, historyClassArrayList, helperClass);
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
                 recyclerView.setAdapter(historyAdapter);
+                calculateWaterDrinked();
             }
 
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -192,7 +210,7 @@ ImageView img;
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(totalIntake);
         progressBar.setProgress(totalAmount);
-        waterQuantity.setText(0 + "/" + totalIntake);
+        waterQuantity.setText(totalAmount + " ml /" + totalIntake + " ml");
 
         addWater.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,10 +229,11 @@ ImageView img;
 
                     long result = helperClass.addRecord(addWater.getText().toString(), changeDrink.getText().toString(), currentTime);
                     if (result != -1) {
-                        Toast.makeText(MainContent.this, "done ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainContent.this, "Data Added for this drink", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainContent.this, "Not done", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainContent.this, "Sorry can not store data For this drink", Toast.LENGTH_SHORT).show();
                     }
+
 
                     refreshRecyclerView();
 
@@ -223,12 +242,20 @@ ImageView img;
             }
 
             private void refreshRecyclerView() {
-                historyClassArrayList.clear();
+                try {
+                    if (historyClassArrayList.size()>0){
+                        historyClassArrayList.clear();
+                    }
+                }catch (NullPointerException e){
+                    Toast.makeText(MainContent.this,"", Toast.LENGTH_SHORT).show();
+                }
+
                 historyClassArrayList = helperClass.getHistory();
                 historyAdapter = new HistoryAdapter(MainContent.this, historyClassArrayList, helperClass);
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainContent.this));
                 recyclerView.setAdapter(historyAdapter);
-                historyAdapter.notifyDataSetChanged();
+
+
             }
         });
 
@@ -325,8 +352,6 @@ ImageView img;
         });
 
 
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -336,6 +361,7 @@ ImageView img;
         navigationView.setNavigationItemSelectedListener(this);
         View view = navigationView.getHeaderView(0);
         TextView userName = view.findViewById(R.id.userName);
+        userName.setText(UserName);
         userName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -351,23 +377,38 @@ ImageView img;
         }
     }
 
+    private void calculateWaterDrinked() {
+        ArrayList<Integer> intakedWater = helperClass.totalIntakeByUser();
+        int a = 0;
+        for (int i= 0; i < intakedWater.size(); i++){
+            a += intakedWater.get(i);
+
+        }
+        totalAmount = a;
+
+    }
+
     private void calculateWaterIntake() {
 
         //receiving this information from profile activity
         //edited : we can not get information from profile activity because our first main screen is this activity
         //so we have to get info from the RealTime Database
-
+        UserName = sharedPreferencesForUserInfo.getString("name","Mundi");
         int userAge = sharedPreferencesForUserInfo.getInt("age", 0);
         int weight = sharedPreferencesForUserInfo.getInt("weight", 0);
         int height = sharedPreferencesForUserInfo.getInt("height", 0);
         String gender = sharedPreferencesForUserInfo.getString("gender", "");
 
+        Toast.makeText(this, "age "+userAge, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "weight "+weight, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "gender "+gender, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "name "+UserName, Toast.LENGTH_SHORT).show();
 
         if (userAge < 13) {
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 1700).apply();
-        } else if (userAge >= 14 && userAge <= 18) {
+        } if (userAge >= 14 && userAge <= 18) {
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 2300).apply();
-        } else if (userAge >= 19) {
+        } if (userAge >= 19) {
             if (gender.equalsIgnoreCase("male")) {
                 sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 3100).apply();
             } else {
@@ -385,11 +426,16 @@ ImageView img;
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeWeight", 2600).apply();
         }
 
+
+
         int total1 = sharedPreferencesWaterIntake.getInt("totalIntakeAge", 0);
         int totol2 = sharedPreferencesWaterIntake.getInt("totalIntakeWeight", 0);
 
-        int finalTotal = (total1 + totol2) / 2;
+        Toast.makeText(this, "totalIntakeAge"+total1, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "totalIntakeWeight"+totol2, Toast.LENGTH_SHORT).show();
+        int finalTotal = (total1 + totol2 * 2 ) / 2;
 
+        totalIntake = finalTotal;
         sharedPreferencesWaterIntake.edit().putInt("totalIntake", finalTotal).apply();
 
         Toast.makeText(this, "Total Amount of water needed is  " + finalTotal, Toast.LENGTH_LONG).show();
@@ -427,12 +473,13 @@ ImageView img;
 
     public void quotesChange() throws InterruptedException {
         Random random = new Random();
-        int h = random.nextInt((5-0)+1) + 0;
+        int h = random.nextInt((5 - 0) + 1) + 0;
         quotes.setText(String.valueOf(motiQuotes[h]));
-        new CountDownTimer(5000,2000) {
+        new CountDownTimer(5000, 2000) {
 
             @Override
-            public void onTick(long millisUntilFinished) {}
+            public void onTick(long millisUntilFinished) {
+            }
 
             @Override
             public void onFinish() {
@@ -466,16 +513,13 @@ ImageView img;
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("Service status", "Running");
+                Log.i("Service status", "Running");
                 return true;
             }
         }
-        Log.i ("Service status", "Not running");
+        Log.i("Service status", "Not running");
         return false;
     }
-
-
-
 
 
 }

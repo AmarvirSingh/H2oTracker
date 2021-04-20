@@ -92,4 +92,29 @@ public class HelperClass extends SQLiteOpenHelper {
         return  null;
     }
 
+    public ArrayList<Integer> totalIntakeByUser(){
+
+            SQLiteDatabase database = getReadableDatabase();
+
+            Cursor cursor = null;
+            cursor = database.rawQuery("SELECT * FROM historyTable", null);
+
+            ArrayList<Integer> arrayList = new ArrayList<>();
+            if (cursor.getCount() != 0) {
+
+                while (cursor.moveToNext()) {
+                    String amount = cursor.getString(1);
+
+//                    HistoryClass modelClass = new HistoryClass(amount);
+
+                    arrayList.add(Integer.parseInt(amount));
+                }
+                cursor.close();
+                return arrayList;
+
+            } else {
+                return null;
+            }
+    }
+
 }

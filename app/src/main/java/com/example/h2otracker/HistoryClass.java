@@ -13,6 +13,10 @@ public class HistoryClass {
         Amount = amount;
     }
 
+    public HistoryClass(String amount) {
+        Amount = amount;
+    }
+
     public String getType() {
         return Type;
     }
