@@ -326,7 +326,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + smallSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("100");
                         dialog.dismiss();
-
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.app_icon));
                     }
                 });
                 mediumSize.setOnClickListener(new View.OnClickListener() {
@@ -346,7 +346,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(MainContent.this, "" + largeSize.getText(), Toast.LENGTH_SHORT).show();
                         addWater.setText("300");
                         dialog.dismiss();
-                        img.setImageDrawable(getResources().getDrawable(R.drawable.medal));
+                        img.setImageDrawable(getResources().getDrawable(R.drawable.medium));
                     }
                 });
                 dialog.show();

@@ -20,7 +20,11 @@
             android:name=".MainContent"
             android:label="@string/title_activity_main_content"
             android:theme="@style/Theme.H2OTracker.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".StaticAndHistoryActivity" />
         <activity android:name=".ProfileActivity" />
@@ -29,11 +33,7 @@
             android:name=".RegisterActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 
