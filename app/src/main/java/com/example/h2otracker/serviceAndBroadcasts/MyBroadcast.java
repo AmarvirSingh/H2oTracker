@@ -53,10 +53,10 @@ SharedPreferences sharedPreferences;
                 PendingIntent.FLAG_UPDATE_CURRENT);*/
         mBuilder.setSound(null);
 
-      if (tone.equalsIgnoreCase("tone1")){
+      if (tone.equalsIgnoreCase("tone1") && !sharedPreferences.getBoolean("NotificationOn",true)){
           MediaPlayer mp= MediaPlayer.create(context,R.raw.tone1);
           mp.start();
-      } else{
+      } else if (tone.equalsIgnoreCase("tone2") && !sharedPreferences.getBoolean("NotificationOn",true)){
           MediaPlayer mp= MediaPlayer.create(context,R.raw.tone2);
           mp.start();
       }

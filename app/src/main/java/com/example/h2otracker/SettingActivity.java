@@ -138,35 +138,18 @@ View view;
         // reminder
 
         Reminder = findViewById(R.id.ReminderSwitch);
-        Reminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = "Much longer text that cannot fit one line...";
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(SettingActivity.this)
-                        .setSmallIcon(R.drawable.notification)
-                        .setContentTitle("My notification")
-                        .setContentText(message)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("Much longer text that cannot fit one line..."))
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setAutoCancel(true);
+      Reminder.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              if (Reminder.isChecked()){
+                  sharedPreferences.edit().putBoolean("NotificationOn",false).apply();
 
-                Intent intent = new Intent(SettingActivity.this,MainContent.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("message",message);
+              }else{
+                  sharedPreferences.edit().putBoolean("NotificationOn",true).apply();
 
-                PendingIntent pendingIntent = PendingIntent.getActivity(SettingActivity.this,
-                        0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.setContentIntent(pendingIntent);
-
-
-                NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-
-                notificationManager.notify(0,builder.build());
-
-            }
-        });
-
+              }
+          }
+      });
 
 
 
