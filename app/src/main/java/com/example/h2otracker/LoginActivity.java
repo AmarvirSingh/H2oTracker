@@ -3,6 +3,9 @@ package com.example.h2otracker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -71,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                     height = profile.getHeight();
                     weight = profile.getWeight();
                     gender = profile.getGender();
-                    Log.d("TAG", "onDataChange: " + name);
+                    Log.d("TAG", "onDataChange: in Login Activityd " + name);
                     // saving data in shared preferences
                     sharedPreferencesForUserInfo.edit().putString("name", name).apply();
                     sharedPreferencesForUserInfo.edit().putInt("age", Integer.parseInt(age)).apply();
@@ -236,7 +239,20 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Reset password Link has been sent to the given Email ", Toast.LENGTH_LONG).show();
+                            android.app.AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                            builder.setTitle("Reset Password")
+                                    .setMessage("Reset Password link has been sent to your Email id.\nNow you can change your password their.")
+                                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                                    // The dialog is automatically dismissed when a dialog button is clicked.
+                                    .setPositiveButton("Cool!", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Continue with delete operation
+                                            return;
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
                             loginEmail.setText("");
 
                         } else {
@@ -296,13 +312,12 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(LoginActivity.this, "signed in successfully" + user.getUid(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Signed in Successfully", Toast.LENGTH_SHORT).show();
                             goToMain();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "sign in failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Cannot Take You In, Please try again within some time.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

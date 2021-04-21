@@ -11,28 +11,37 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.H2OTracker">
+        android:theme="@style/Theme.H2OTracker"
+        >
 
 
         <activity android:name=".Achievements"
-            android:theme="@style/Theme.H2OTracker.NoActionBar">
+            android:theme="@style/Theme.H2OTracker.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".MainContent"
             android:label="H2O Tracker"
-            android:theme="@style/Theme.H2OTracker.NoActionBar">
+            android:theme="@style/Theme.H2OTracker.NoActionBar"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity android:name=".StaticAndHistoryActivity"
-            android:theme="@style/Theme.H2OTracker.NoActionBar"/>
+            android:theme="@style/Theme.H2OTracker.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ProfileActivity"
-            android:theme="@style/Theme.H2OTracker.NoActionBar"/>
+            android:theme="@style/Theme.H2OTracker.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".SettingActivity"
-            android:theme="@style/Theme.H2OTracker.NoActionBar"/>
+            android:theme="@style/Theme.H2OTracker.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-        <activity android:name=".LoginActivity">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LoginActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

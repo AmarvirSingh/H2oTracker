@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.FontRequest;
@@ -18,9 +19,14 @@ import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.h2otracker.custom.DayAxisValueFormatter;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -30,6 +36,9 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -77,6 +86,7 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
         chart = findViewById(R.id.chart);
         progressBar = findViewById(R.id.progressbarInHistoryPage);
         progressBar.setVisibility(View.VISIBLE);
+        chart.setDrawGridBackground(false);
         /*selectDate = findViewById(R.id.selectDate);
         pieChart = findViewById(R.id.pieChart);
 */
@@ -102,6 +112,9 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
 
         });*/
 
+
+
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -109,10 +122,30 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
                 BarDataSet barDataSet = new BarDataSet(dataValues(), "Water Intake");
                 BarData barData = new BarData();
                 barData.addDataSet(barDataSet);
-                chart.setData(barData);
-                barData.setValueTextColor(Color.CYAN);
 
+
+                ValueFormatter valueFormatter = new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        return super.getFormattedValue(value);
+                    }
+                };
+
+                barData.setValueFormatter(valueFormatter);
+
+
+                barData.setValueTextColor(Color.RED);
+                Description desc = new Description();
+                desc.setText("User Water Intake history ");
+                desc.setTextAlign(Paint.Align.RIGHT);
+                chart.setDescription(desc);
+                chart.setDrawBarShadow(true);
+                chart.setData(barData);
+
+                chart.invalidate();
                 progressBar.setVisibility(View.INVISIBLE);
+
+
             }
         }, 4000);
 
