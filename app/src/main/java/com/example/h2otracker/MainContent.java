@@ -83,7 +83,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
     HistoryAdapter historyAdapter;
     ArrayList<HistoryClass> historyClassArrayList;
 
-    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo;
+    SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo,sp;
 
     String wakeupTime = "";
 
@@ -151,6 +151,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         // shared preference for user info
         sharedPreferencesForUserInfo = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
+        sp = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+
 
         //calculating waterIntake
         calculateWaterIntake();
@@ -196,13 +198,14 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 Calendar calendar = Calendar.getInstance();
-                String[] separated = wakeupTime.split("-c");
-                Toast.makeText(MainContent.this, ""+separated[0], Toast.LENGTH_SHORT).show();
+                calendar.add(Calendar.HOUR,8);
+                calendar.add(Calendar.MINUTE,10);
+
         /*calendar.add(Calendar.HOUR,Integer.parseInt(separated[0]));
         calendar.add(Calendar.MINUTE,Integer.parseInt(separated[1]));
         calendar.add();*/
-                Log.i(TAG, "time : "+separated.length);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60 * 60 * 60 * 1000, pendingIntent); // every one hour seconds
+              ;
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60000, pendingIntent); // every one hour seconds
 
                 Calendar date = Calendar.getInstance();
 
@@ -476,7 +479,6 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         String gender = sharedPreferencesForUserInfo.getString("gender", "");
         String wakeup = sharedPreferencesForUserInfo.getString("wakeup","");
 
-        Toast.makeText(this, "wakeup time "+wakeup, Toast.LENGTH_SHORT).show();
         if (userAge < 13) {
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 1700).apply();
         } if (userAge >= 14 && userAge <= 18) {
@@ -504,14 +506,12 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         int total1 = sharedPreferencesWaterIntake.getInt("totalIntakeAge", 0);
         int totol2 = sharedPreferencesWaterIntake.getInt("totalIntakeWeight", 0);
 
-        Toast.makeText(this, "totalIntakeAge"+total1, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "totalIntakeWeight"+totol2, Toast.LENGTH_SHORT).show();
+
         int finalTotal = (total1 + totol2  ) / 2;
 
         totalIntake = finalTotal;
         sharedPreferencesWaterIntake.edit().putInt("totalIntake", finalTotal).apply();
 
-        Toast.makeText(this, "Total Amount of water needed is  " + finalTotal, Toast.LENGTH_LONG).show();
 
     }
 
@@ -536,6 +536,10 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
                 return true;
             case R.id.nav_logout:
                 mAuth.signOut();
+                helperClass.deleteRecords();
+                sharedPreferencesForUserInfo.edit().clear().apply();
+                sharedPreferencesWaterIntake.edit().clear().apply();
+                sp.edit().clear().apply();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 return true;

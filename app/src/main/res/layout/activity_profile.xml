@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
     tools:context=".ProfileActivity">
+
     <View
         android:id="@+id/dayView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/day_blue"
+        android:background="@color/backgroundColor"
         tools:ignore="InvalidId" />
 
 

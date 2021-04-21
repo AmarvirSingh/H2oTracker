@@ -60,17 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         boolean bool = sharedPreferences.getBoolean("isDarkModeOn",false);
-        dayView = findViewById(R.id.dayView);
 
-
-        if(bool)
-        {
-            dayView.setBackgroundResource(R.drawable.night_blue);
-
-        }
-        else{
-            dayView.setBackgroundResource(R.drawable.day_blue);
-        }
         /*
 
         account = GoogleSignIn.getLastSignedInAccount(this);

@@ -126,7 +126,10 @@ public class LoginActivity extends AppCompatActivity {
         loginForgotPassword.setAnimation(animation);
         loginCreateAccount.setAnimation(animation);
 
-        loginCreateAccount.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+        loginCreateAccount.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            finish();
+        });
         //getting instance
         mAuth = FirebaseAuth.getInstance();
         // creating request

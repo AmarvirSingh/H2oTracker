@@ -178,4 +178,9 @@ public class HelperClass extends SQLiteOpenHelper {
             }
     }
 
+    public void deleteRecords(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("historyTable",null,null);
+    }
+
 }

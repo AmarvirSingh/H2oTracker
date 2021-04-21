@@ -49,11 +49,16 @@ SharedPreferences sharedPreferences;
         mBuilder.setSmallIcon(R.drawable.app_icon);
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
 
+        Intent intent = new Intent(context,MainContent.class);
+        PendingIntent intent1 = PendingIntent.getActivity(context,0,intent,0);
+
 
       /*  Intent notificationIntent = new Intent(context, MyBroadcast.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);*/
         mBuilder.setSound(null);
+
+        mBuilder.setContentIntent(intent1);
 
       if (tone.equalsIgnoreCase("tone1") && !sharedPreferences.getBoolean("NotificationOn",false)){
           MediaPlayer mp= MediaPlayer.create(context,R.raw.tone1);
