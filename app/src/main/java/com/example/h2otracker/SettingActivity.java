@@ -58,7 +58,9 @@ public class SettingActivity extends AppCompatActivity {
         super.onStart();
         sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
 
+
         isDarkModeOn = getSharedPreferences("sharedPrefs", MODE_PRIVATE).getBoolean("isDarkModeOn", false);
+
 
 
         if (isDarkModeOn) {
@@ -66,6 +68,7 @@ public class SettingActivity extends AppCompatActivity {
 
             dark_switch.setChecked(true);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            view.setVisibility(View.GONE);
         } else {
             view.setBackgroundResource(R.drawable.day_blue);
             dark_switch.setChecked(false);
