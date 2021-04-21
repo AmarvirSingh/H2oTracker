@@ -66,7 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
         if(bool)
         {
             dayView.setBackgroundResource(R.drawable.night_blue);
-
+            dayView.setVisibility(View.GONE);
         }
         else{
             dayView.setBackgroundResource(R.drawable.day_blue);
