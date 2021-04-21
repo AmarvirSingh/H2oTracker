@@ -198,8 +198,8 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.HOUR,8);
-                calendar.add(Calendar.MINUTE,10);
+               /* calendar.add(Calendar.HOUR,8);
+                calendar.add(Calendar.MINUTE,10);*/
 
         /*calendar.add(Calendar.HOUR,Integer.parseInt(separated[0]));
         calendar.add(Calendar.MINUTE,Integer.parseInt(separated[1]));
