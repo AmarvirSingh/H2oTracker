@@ -140,7 +140,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn",false);
         if (isDarkModeOn){
-            view.setBackgroundResource(R.drawable.night_blue);
+            view.setVisibility(View.GONE);
         }else{
             view.setBackgroundResource(R.drawable.day_blue);
         }
