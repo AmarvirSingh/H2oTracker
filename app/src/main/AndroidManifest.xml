@@ -14,26 +14,31 @@
         android:theme="@style/Theme.H2OTracker">
 
 
-        <activity android:name=".Achievements">
+        <activity android:name=".Achievements"
+            android:theme="@style/Theme.H2OTracker.NoActionBar">
         </activity>
         <activity
             android:name=".MainContent"
-            android:label="@string/title_activity_main_content"
+            android:label="H2O Tracker"
             android:theme="@style/Theme.H2OTracker.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".StaticAndHistoryActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SettingActivity" />
+        <activity android:name=".StaticAndHistoryActivity"
+            android:theme="@style/Theme.H2OTracker.NoActionBar"/>
+        <activity android:name=".ProfileActivity"
+            android:theme="@style/Theme.H2OTracker.NoActionBar"/>
+        <activity android:name=".SettingActivity"
+            android:theme="@style/Theme.H2OTracker.NoActionBar"/>
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity android:name=".LoginActivity">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
 

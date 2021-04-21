@@ -16,29 +16,31 @@
         android:layout_marginBottom="10dp"/>
 
     <Button
+        android:id="@+id/smallCup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/design_button"
         android:text="100ml"
-        android:layout_marginVertical="5dp"
-        android:background="@color/buttonColor"
-        android:textColor="@color/textColor"
-        android:id="@+id/smallCup"/>
+        android:textColor="@color/textColor" />
+
     <Button
+        android:id="@+id/mediumCup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
-        android:background="@color/buttonColor"
-        android:textColor="@color/textColor"
+        android:background="@drawable/design_button"
         android:text="200ml"
-        android:id="@+id/mediumCup"/>
+        android:textColor="@color/textColor" />
+
     <Button
+        android:id="@+id/largeCup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/buttonColor"
-        android:textColor="@color/textColor"
-        android:text="300ml"
         android:layout_marginVertical="5dp"
-        android:id="@+id/largeCup"/>
+        android:background="@drawable/design_button"
+        android:text="300ml"
+        android:textColor="@color/textColor" />
 
 
 

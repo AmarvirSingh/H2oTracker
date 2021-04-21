@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.h2otracker.MainContent;
 import com.example.h2otracker.R;
 import com.example.h2otracker.SettingActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,10 +44,11 @@ SharedPreferences sharedPreferences;
 
     private void createNotification(Context context) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context,"inform");
-        mBuilder.setContentTitle("title notioficatioon");
-        mBuilder.setContentText("thisnis text 0");
+        mBuilder.setContentTitle("H2O Tracker");
+        mBuilder.setContentText("Its time to drink water Buddy");
         mBuilder.setSmallIcon(R.drawable.app_icon);
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+
 
       /*  Intent notificationIntent = new Intent(context, MyBroadcast.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent,

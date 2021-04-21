@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/backgroundColor"
+    android:background="@drawable/bg_nav_bar"
+    android:filterTouchesWhenObscured="true"
+    android:fitsSystemWindows="false"
+    android:focusableInTouchMode="false"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -26,15 +29,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:textColor="@color/textColor"
         android:text="User Name"
+        android:textColor="@color/textColor"
+        android:textSize="20dp"
         tools:text="H2O Tracker" />
 
     <TextView
         android:id="@+id/quotesID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
         android:text="Don't Forget to Drink Water"
+        android:textColor="@color/textColor"
         tools:text="Main App" />
 </LinearLayout>

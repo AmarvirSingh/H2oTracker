@@ -16,21 +16,22 @@
         android:layout_marginBottom="10dp"/>
 
     <Button
-        android:layout_width="300dp"
+        android:id="@+id/tone1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/design_button"
         android:text="Tone1"
-        android:layout_marginVertical="5dp"
-        android:background="@color/backgroundColor"
-        android:textColor="@color/textColor"
-        android:id="@+id/tone1"/>
+        android:textColor="@color/textColor" />
+
     <Button
-        android:layout_width="300dp"
+        android:id="@+id/tone2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
-        android:background="@color/backgroundColor"
-        android:textColor="@color/textColor"
+        android:background="@drawable/design_button"
         android:text="Tone2"
-        android:id="@+id/tone2"/>
+        android:textColor="@color/textColor" />
 
 
 

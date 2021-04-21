@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,11 +43,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-
+    ProgressBar progressBar;
     Button btnLogin;
-
     SharedPreferences sharedPreferencesForUserInfo;
-
 
     @Override
     protected void onStart() {
@@ -54,39 +53,31 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             goToMain();
-
         }
     }
 
     private void goToMain() {
-
         FirebaseUser user = mAuth.getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
         // receiving user data from firebase database
-
         reference.child(user.getUid()).child("UserInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User profile = snapshot.getValue(User.class);
                 String name, age, height, weight, gender;
-
                 if (profile != null) {
                     name = profile.getFullName();
                     age = profile.getAge();
                     height = profile.getHeight();
                     weight = profile.getWeight();
                     gender = profile.getGender();
-
                     Log.d("TAG", "onDataChange: " + name);
-
-
                     // saving data in shared preferences
                     sharedPreferencesForUserInfo.edit().putString("name", name).apply();
                     sharedPreferencesForUserInfo.edit().putInt("age", Integer.parseInt(age)).apply();
                     sharedPreferencesForUserInfo.edit().putInt("height", Integer.parseInt(height)).apply();
                     sharedPreferencesForUserInfo.edit().putInt("weight", Integer.parseInt(weight)).apply();
                     sharedPreferencesForUserInfo.edit().putString("gender", gender).apply();
-
                     // Toast.makeText(LoginActivity.this, "age in get user data" + sharedPreferencesForUserInfo.getInt("age", 0), Toast.LENGTH_LONG).show();
                 }
             }
@@ -97,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
         });
+        progressBar.setVisibility(View.INVISIBLE);
         startActivity(new Intent(this, MainContent.class));
         finish();
     }
@@ -106,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         TextView loginTextView = findViewById(R.id.loginTextView);
         EditText loginEmail = findViewById(R.id.loginEmail);
         EditText loginPassword = findViewById(R.id.loginPassword);
@@ -117,6 +108,9 @@ public class LoginActivity extends AppCompatActivity {
         TextView loginUsing = findViewById(R.id.loginUsing);
         // ImageView loginGoogle = findViewById(R.id.loginGoogle);
         //  View bg = findViewById(R.id.bg);
+        progressBar = findViewById(R.id.progressBarInLogin);
+
+        progressBar.setVisibility(View.INVISIBLE);
 
         sharedPreferencesForUserInfo = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
@@ -164,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                // progressBarLogin.setVisibility(View.VISIBLE);
+                 progressBar.setVisibility(View.VISIBLE);
 
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -180,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     User profile = snapshot.getValue(User.class);
-                                    String name, age, height, weight, gender;
+                                    String name, age, height, weight, gender,wakeup, sleep;
 
                                     if (profile != null) {
                                         name = profile.getFullName();
@@ -188,6 +182,8 @@ public class LoginActivity extends AppCompatActivity {
                                         height = profile.getHeight();
                                         weight = profile.getWeight();
                                         gender = profile.getGender();
+                                        wakeup = profile.getWakeupTime();
+                                        sleep = profile.getSleepTime();
 
                                         Log.d("TAG", "onDataChange: " + name);
 
@@ -198,21 +194,21 @@ public class LoginActivity extends AppCompatActivity {
                                         sharedPreferencesForUserInfo.edit().putInt("height", Integer.parseInt(height)).apply();
                                         sharedPreferencesForUserInfo.edit().putInt("weight", Integer.parseInt(weight)).apply();
                                         sharedPreferencesForUserInfo.edit().putString("gender", gender).apply();
+                                        sharedPreferencesForUserInfo.edit().putString("wakeup",wakeup).apply();
+                                        sharedPreferencesForUserInfo.edit().putString("sleep",sleep).apply();
 
                                         // Toast.makeText(LoginActivity.this, "age in get user data" + sharedPreferencesForUserInfo.getInt("age", 0), Toast.LENGTH_LONG).show();
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
-
-
                             });
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+                                    progressBar.setVisibility(View.GONE);
                                     // redirect to user profile
                                     startActivity(new Intent(LoginActivity.this, MainContent.class));
                                     finish();
@@ -221,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         } else {
                             Toast.makeText(LoginActivity.this, "failed to logfin", Toast.LENGTH_SHORT).show();
-                            // progressBarLogin.setVisibility(View.GONE);
+                             progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -266,6 +262,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
+        progressBar.setVisibility(View.VISIBLE);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }

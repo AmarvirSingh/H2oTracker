@@ -2,11 +2,13 @@ package com.example.h2otracker;
 
 import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -46,6 +48,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -58,6 +61,7 @@ import java.util.TimerTask;
 public class MainContent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    private static final String TAG = "Main Content" ;
     TextView quotes, waterQuantity;
     String[] motiQuotes = {"You're so much stronger than your excuses", "Don't compare yourself to others.", "Don't Quit.", "Don't tell everyone your plans, instead show them your results.", "“I choose to make the rest of my life, the best of my life.”", "Nothing can dim the light that shines from within.”", "Hustlers don’t sleep, they na"};
     Button addWater, nextQuote, changeCup, changeDrink;
@@ -81,6 +85,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
     SharedPreferences sharedPreferencesWaterIntake, sharedPreferencesForUserInfo;
 
+    String wakeupTime = "";
 
     Intent mServiceIntent;
 
@@ -130,6 +135,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
         helperClass = new HelperClass(this);
 
+
         // using shared reference for setting background image if night mode is enabled
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn",false);
@@ -151,6 +157,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         sendDataTOFirebase();
 
 
+        Log.i(TAG, "onCreate: " + sharedPreferencesForUserInfo.getString("wakeup",""));
 
 
 
@@ -177,24 +184,35 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         };
         timer.schedule(timerTask, 5000);
 */
-        Intent intent = new Intent(MainContent.this, MyBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainContent.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainContent.this, MyBroadcast.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(MainContent.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent dataIntent = new Intent(MainContent.this, sendDataBroadcast.class);
-        dataIntent.putExtra("amount",totalAmount);
-        PendingIntent dataPendingIntent = PendingIntent.getBroadcast(MainContent.this,0,dataIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+                Intent dataIntent = new Intent(MainContent.this, sendDataBroadcast.class);
+                dataIntent.putExtra("amount",totalAmount);
+                PendingIntent dataPendingIntent = PendingIntent.getBroadcast(MainContent.this,0,dataIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10000, pendingIntent); // every 10 seconds
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Calendar calendar = Calendar.getInstance();
+                String[] separated = wakeupTime.split("-c");
+                Toast.makeText(MainContent.this, ""+separated[0], Toast.LENGTH_SHORT).show();
+        /*calendar.add(Calendar.HOUR,Integer.parseInt(separated[0]));
+        calendar.add(Calendar.MINUTE,Integer.parseInt(separated[1]));
+        calendar.add();*/
+                Log.i(TAG, "time : "+separated.length);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60 * 60 * 60 * 1000, pendingIntent); // every one hour seconds
 
-        Calendar date = Calendar.getInstance();
+                Calendar date = Calendar.getInstance();
 
-        date.set(Calendar.HOUR, 23);
-        date.set(Calendar.MINUTE, 35);
-        date.set(Calendar.SECOND, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,date.getTimeInMillis(),dataPendingIntent);
+                date.set(Calendar.HOUR, 23);
+                date.set(Calendar.MINUTE, 35);
+                date.set(Calendar.SECOND, 0);
+                alarmManager.set(AlarmManager.RTC_WAKEUP,date.getTimeInMillis(),dataPendingIntent);
+            }
+        }, 5000);
+
 
         changeDrink.setText("Water");
 
@@ -456,12 +474,9 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         int weight = sharedPreferencesForUserInfo.getInt("weight", 0);
         int height = sharedPreferencesForUserInfo.getInt("height", 0);
         String gender = sharedPreferencesForUserInfo.getString("gender", "");
+        String wakeup = sharedPreferencesForUserInfo.getString("wakeup","");
 
-        Toast.makeText(this, "age "+userAge, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "weight "+weight, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "gender "+gender, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "name "+UserName, Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(this, "wakeup time "+wakeup, Toast.LENGTH_SHORT).show();
         if (userAge < 13) {
             sharedPreferencesWaterIntake.edit().putInt("totalIntakeAge", 1700).apply();
         } if (userAge >= 14 && userAge <= 18) {
@@ -491,7 +506,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
 
         Toast.makeText(this, "totalIntakeAge"+total1, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "totalIntakeWeight"+totol2, Toast.LENGTH_SHORT).show();
-        int finalTotal = (total1 + totol2 * 2 ) / 2;
+        int finalTotal = (total1 + totol2  ) / 2;
 
         totalIntake = finalTotal;
         sharedPreferencesWaterIntake.edit().putInt("totalIntake", finalTotal).apply();
@@ -522,6 +537,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             case R.id.nav_logout:
                 mAuth.signOut();
                 startActivity(new Intent(this, LoginActivity.class));
+                finish();
                 return true;
             default:
                 Toast.makeText(this, "activity Not Applied ", Toast.LENGTH_SHORT).show();
@@ -533,7 +549,7 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
         Random random = new Random();
         int h = random.nextInt((5 - 0) + 1) + 0;
         quotes.setText(String.valueOf(motiQuotes[h]));
-        new CountDownTimer(5000, 2000) {
+        new CountDownTimer(10000, 5000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -564,6 +580,34 @@ public class MainContent extends AppCompatActivity implements NavigationView.OnN
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Dialog dialog = new Dialog(this);
+      builder.setTitle("Exit")
+                .setMessage("Stay Healthy And Stay Fit AND \ndo not Forget to Drink Water !")
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
+                        finish();
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
+
     }
 
     // for service

@@ -49,9 +49,10 @@
 
             <TextView
                 android:id="@+id/quotesID"
-                android:layout_width="256dp"
-                android:layout_height="58dp"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
                 android:layout_marginTop="4dp"
+                android:textSize="20dp"
                 android:text="Beautiful quotes"
                 android:textColor="@color/textColor"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +113,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:background="@color/buttonColor"
+                android:background="@drawable/design_button"
                 android:text="Change Cup"
                 android:textColor="@color/textColor" />
 
@@ -121,7 +122,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:background="@color/buttonColor"
+                android:background="@drawable/design_button"
                 android:text="250"
                 android:textColor="@color/textColor" />
 
@@ -130,7 +131,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:background="@color/buttonColor"
+                android:background="@drawable/design_button"
                 android:text="Change Drink"
                 android:textColor="@color/textColor" />
         </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.h2otracker;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -109,6 +110,7 @@ public class StaticAndHistoryActivity extends AppCompatActivity {
                 BarData barData = new BarData();
                 barData.addDataSet(barDataSet);
                 chart.setData(barData);
+                barData.setValueTextColor(Color.CYAN);
 
                 progressBar.setVisibility(View.INVISIBLE);
             }

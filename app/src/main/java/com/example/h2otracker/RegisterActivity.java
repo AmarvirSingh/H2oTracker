@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextView sleepTime, wakeTime;
     Button btnTakeMeIn, btnSleep, btnWake;
     Spinner spinner;
+    ProgressBar progressBarInRegister;
+
     String[] gender = {"Male", "Female"};
 
     //global variables
@@ -67,9 +71,10 @@ public class RegisterActivity extends AppCompatActivity {
         btnTakeMeIn = findViewById(R.id.btnTakeMeIn);
         btnWake = findViewById(R.id.btnWake);
         spinner = findViewById(R.id.signUpSpinner);
+        progressBarInRegister = findViewById(R.id.progressBarInRegister);
 
 
-
+        progressBarInRegister.setVisibility(View.INVISIBLE);
 
 
         Log.d("TAG", "On create ");
@@ -95,6 +100,8 @@ public class RegisterActivity extends AppCompatActivity {
         btnTakeMeIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 String name = etName.getText().toString();
                 String userAge = etAge.getText().toString();
                 String userWeight = etWeight.getText().toString();
@@ -145,28 +152,28 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                progressBarInRegister.setVisibility(View.VISIBLE);
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                                User user = new User(name, email, userAge, userHeight, userWeight,userGender,userWakeUp, userSleep );
-                                FirebaseDatabase.getInstance().getReference("User").child(mAuth.getCurrentUser().getUid())
-                                        .child("UserInfo").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
+                            User user = new User(name, email, userAge, userHeight, userWeight, userGender, userWakeUp, userSleep);
+                            FirebaseDatabase.getInstance().getReference("User").child(mAuth.getCurrentUser().getUid())
+                                    .child("UserInfo").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
                                         Toast.makeText(RegisterActivity.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
-
-
-
-
-                                    }else{
-                                        Toast.makeText(RegisterActivity.this, "Sorry Cannot register", Toast.LENGTH_SHORT).show();
+                                        progressBarInRegister.setVisibility(View.INVISIBLE);
+                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                        finish();
                                     }
-                                    }
-                                });
-                        }else{
+                                }
+                            });
+                        } else {
                             Toast.makeText(RegisterActivity.this, "Can not create id ", Toast.LENGTH_SHORT).show();
+                            progressBarInRegister.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
@@ -174,18 +181,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
-        //viewPager = findViewById(R.id.pager);
-
-      /*  slideAdapter = new ScreenSlideAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(slideAdapter);
-        viewPager.setCurrentItem(viewPager.getCurrentItem());
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });*/
 
         btnWake.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(RegisterActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        wakeTime.setText(selectedHour + ":" + selectedMinute);
+                        wakeTime.setText(selectedHour + "-" + selectedMinute);
                         userWakeUp = wakeTime.getText().toString();
                     }
                 }, hour, minute, true);//Yes 24 hour time
@@ -231,35 +226,5 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-  /*  private static class ScreenSlideAdapter extends FragmentStatePagerAdapter{
-
-        public ScreenSlideAdapter(@NonNull FragmentManager fm) {
-            super(fm);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            switch (position){
-                case 0:
-                    FragmentCredential fragmentCredential = new FragmentCredential();
-                    return fragmentCredential;
-                case 1:
-                    FragmentWeight fragmentWeight = new FragmentWeight();
-                    return fragmentWeight;
-                case 2:
-                    SelectionFragment selectionFragment = new SelectionFragment();
-                    return selectionFragment;
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return TOTAL_PAGES;
-        }
-
-
-    }*/
 
 }
